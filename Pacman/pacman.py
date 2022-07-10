@@ -376,6 +376,10 @@ def startGame():
 
   block_list = pygame.sprite.RenderPlain()
 
+  fire_block_list=pygame.sprite.RenderPlain()
+
+  freeze_block_list=pygame.sprite.RenderPlain()
+
   monsta_list = pygame.sprite.RenderPlain()
 
   pacman_collide = pygame.sprite.RenderPlain()
@@ -423,24 +427,38 @@ def startGame():
   for row in range(19):#0 1 2 3 4 5 6 9 10 ...
       for column in range(19):#0 1 2 3 4 5 6 7 11 12 ...
           if (row == 7 or row == 8) and (column == 8 or column == 9 or column == 10):
-              continue
+              continue #Pass Ghosts house
           else:
             block = Block(yellow, 4, 4)
-            fire_ball=Block(red,4,4)
-            
-            if ( row==0 and column==0):
-              fire_ball.rect.x=62
-              fire_ball.rect.y=62
-              print("1")
+            fire_ball=Block(red,10,10)
+            freeze_block=Block(blue,10,10)
+
+
+            if ( row==0 and column==0):#fire block
+              fire_ball.rect.x=(30*column+6)+26
+              fire_ball.rect.y=(30*row+6)+26
+
+              fire_block_list.add(fire_ball)
+              all_sprites_list.add(fire_ball)
+              
+
+            elif (row==10 and column==11):#freeze block
+              freeze_block.rect.x=(30*column+6)+26
+              freeze_block.rect.y=(30*row+6)+26
+
+              freeze_block_list.add(freeze_block)
+              all_sprites_list.add(freeze_block)
+
+
             else:
             # Set a random location for the block
               block.rect.x = (30*column+6)+26
               block.rect.y = (30*row+6)+26
-              print("2")
+              
             
             
             
-            b_collide = pygame.sprite.spritecollide(block, wall_list, False)#충돌한 스프라이트 리스트 반환
+            b_collide = pygame.sprite.spritecollide(block, wall_list, False)#벽과 충돌한 스프라이트 리스트 반환
             p_collide = pygame.sprite.spritecollide(block, pacman_collide, False)
             
 
@@ -449,18 +467,17 @@ def startGame():
             elif p_collide:
               continue
             else:
-              
+                
               # Add the block to the list of objects
               block_list.add(block)
               all_sprites_list.add(block)
-              if (row==18 and column==18):
-                block_list.add(fire_ball)
-                all_sprites_list.add(fire_ball)
+              
             
               
+  
 
   bll = len(block_list)
-
+  
   score = 0
 
   done = False
@@ -524,11 +541,23 @@ def startGame():
 
       # See if the Pacman block has collided with anything.
       blocks_hit_list = pygame.sprite.spritecollide(Pacman, block_list, True)
-       
+      fire_block_hit=pygame.sprite.spritecollide(Pacman,fire_block_list,True)
+      freeze_block_hit=pygame.sprite.spritecollide(Pacman,freeze_block_list,True)
+
       # Check the list of collisions.
       if len(blocks_hit_list) > 0:
           score +=len(blocks_hit_list)
       
+
+      #Freeze Ghosts
+      if freeze_block_hit:
+        pass
+
+      #Fire ball Activated
+      if fire_block_hit:
+        pass
+
+
       # ALL GAME LOGIC SHOULD GO ABOVE THIS COMMENT
    
       # ALL CODE TO DRAW SHOULD GO BELOW THIS COMMENT
