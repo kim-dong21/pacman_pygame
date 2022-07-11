@@ -3,7 +3,9 @@
   
 from platform import python_branch
 import pygame
-  
+import time
+import math
+
 black = (0,0,0)
 white = (255,255,255)
 blue = (0,0,255)
@@ -11,6 +13,9 @@ green = (0,255,0)
 red = (255,0,0)
 purple = (255,0,255)
 yellow   = ( 255, 255,   0)
+
+frozen_time=("5")
+
 
 Trollicon=pygame.image.load("E:/Pacman_py/Pacman/images/Trollman.png")
 pygame.display.set_icon(Trollicon)
@@ -200,6 +205,8 @@ class Player(pygame.sprite.Sprite):
 
 #Inheritime Player klassist
 class Ghost(Player):
+
+    
     # Change the speed of the ghost
     def changespeed(self,list,ghost,turn,steps,l):
       try:
@@ -208,6 +215,8 @@ class Ghost(Player):
           self.change_x=list[turn][0]
           self.change_y=list[turn][1]
           steps+=1
+
+        #방향을 계속 바꿔줌
         else:
           if turn < l:
             turn+=1
@@ -221,6 +230,21 @@ class Ghost(Player):
         return [turn,steps]
       except IndexError:
          return [0,0]
+
+
+#Calculate frozen time      
+sec=0
+start=0
+
+def calc_frozen_time(end):
+  if start:
+    return -1
+  start=time.time()
+  sec=end-start
+  sec=str(math.trunc(sec))
+  return sec
+
+
 
 Pinky_directions = [
 [0,-30,4],
@@ -442,7 +466,7 @@ def startGame():
               all_sprites_list.add(fire_ball)
               
 
-            elif (row==10 and column==11):#freeze block
+            elif (row==14 and column==11):#freeze block
               freeze_block.rect.x=(30*column+6)+26
               freeze_block.rect.y=(30*row+6)+26
 
@@ -484,6 +508,12 @@ def startGame():
 
   i = 0
 
+  frozen=False
+
+  start_time=0
+  
+  end_time=0
+
   while done == False:
       # ALL EVENT PROCESSING SHOULD GO BELOW THIS COMMENT
       for event in pygame.event.get():
@@ -511,51 +541,63 @@ def startGame():
                   Pacman.changespeed(0,-30)
           
       # ALL EVENT PROCESSING SHOULD GO ABOVE THIS COMMENT
-   
+      
+      
+
+      
+      
       # ALL GAME LOGIC SHOULD GO BELOW THIS COMMENT
-      Pacman.update(wall_list,gate)
-
-      returned = Pinky.changespeed(Pinky_directions,False,p_turn,p_steps,pl)
-      p_turn = returned[0]
-      p_steps = returned[1]
-      Pinky.changespeed(Pinky_directions,False,p_turn,p_steps,pl)
-      Pinky.update(wall_list,False)
-
-      returned = Blinky.changespeed(Blinky_directions,False,b_turn,b_steps,bl)
-      b_turn = returned[0]
-      b_steps = returned[1]
-      Blinky.changespeed(Blinky_directions,False,b_turn,b_steps,bl)
-      Blinky.update(wall_list,False)
-
-      returned = Inky.changespeed(Inky_directions,False,i_turn,i_steps,il)
-      i_turn = returned[0]
-      i_steps = returned[1]
-      Inky.changespeed(Inky_directions,False,i_turn,i_steps,il)
-      Inky.update(wall_list,False)
-
-      returned = Clyde.changespeed(Clyde_directions,"clyde",c_turn,c_steps,cl)
-      c_turn = returned[0]
-      c_steps = returned[1]
-      Clyde.changespeed(Clyde_directions,"clyde",c_turn,c_steps,cl)
-      Clyde.update(wall_list,False)
-
-      # See if the Pacman block has collided with anything.
       blocks_hit_list = pygame.sprite.spritecollide(Pacman, block_list, True)
       fire_block_hit=pygame.sprite.spritecollide(Pacman,fire_block_list,True)
       freeze_block_hit=pygame.sprite.spritecollide(Pacman,freeze_block_list,True)
 
+
+      Pacman.update(wall_list,gate)
+
+
+      if freeze_block_hit:
+        frozen=True
+
+      if frozen:
+        
+        if frozen_time==calc_frozen_time(time.time()):
+          frozen=False
+          start=0
+          
+      else:
+        returned = Pinky.changespeed(Pinky_directions,False,p_turn,p_steps,pl)
+        p_turn = returned[0]
+        p_steps = returned[1]
+        Pinky.changespeed(Pinky_directions,False,p_turn,p_steps,pl)
+        Pinky.update(wall_list,False)
+
+        returned = Blinky.changespeed(Blinky_directions,False,b_turn,b_steps,bl)
+        b_turn = returned[0]
+        b_steps = returned[1]
+        Blinky.changespeed(Blinky_directions,False,b_turn,b_steps,bl)
+        Blinky.update(wall_list,False)
+
+        returned = Inky.changespeed(Inky_directions,False,i_turn,i_steps,il)
+        i_turn = returned[0]
+        i_steps = returned[1]
+        Inky.changespeed(Inky_directions,False,i_turn,i_steps,il)
+        Inky.update(wall_list,False)
+
+        returned = Clyde.changespeed(Clyde_directions,"clyde",c_turn,c_steps,cl)
+        c_turn = returned[0]
+        c_steps = returned[1]
+        Clyde.changespeed(Clyde_directions,"clyde",c_turn,c_steps,cl)
+        Clyde.update(wall_list,False)
+
+
+      # See if the Pacman block has collided with anything.
+      
+      
+      
       # Check the list of collisions.
       if len(blocks_hit_list) > 0:
           score +=len(blocks_hit_list)
       
-
-      #Freeze Ghosts
-      if freeze_block_hit:
-        pass
-
-      #Fire ball Activated
-      if fire_block_hit:
-        pass
 
 
       # ALL GAME LOGIC SHOULD GO ABOVE THIS COMMENT
