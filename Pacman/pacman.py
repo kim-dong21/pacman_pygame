@@ -237,11 +237,15 @@ sec=0
 start=0
 
 def calc_frozen_time(end):
-  if start:
-    return -1
-  start=time.time()
+  global start
+  global sec
+
+  if start==0:#start가 0인 경우 초기화, 아닌 경우 frozen 시작 시간 저장, 계산을 통해 시작 시각부터 현재까지의 5초 구함
+    start=time.time()
+
   sec=end-start
   sec=str(math.trunc(sec))
+  print(sec)
   return sec
 
 
@@ -561,8 +565,11 @@ def startGame():
       if frozen:
         
         if frozen_time==calc_frozen_time(time.time()):
-          frozen=False
+          global start
           start=0
+          frozen=False
+
+          
           
       else:
         returned = Pinky.changespeed(Pinky_directions,False,p_turn,p_steps,pl)
