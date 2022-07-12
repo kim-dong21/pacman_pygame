@@ -125,6 +125,10 @@ class Block(pygame.sprite.Sprite):
         # of rect.x and rect.y
         self.rect = self.image.get_rect() 
 
+
+
+
+
 # This class represents the bar at the bottom that the player controls
 class Player(pygame.sprite.Sprite):
   
@@ -232,6 +236,28 @@ class Ghost(Player):
          return [0,0]
 
 
+#This is fire ball class
+class FireBall:
+
+      
+  def __init__(self,width,height):
+
+    pygame.sprite.Sprite.__init__(self) 
+ 
+    color=red
+    self.image = pygame.Surface([width, height])
+    self.image.fill(color)
+    self.image.set_colorkey(color)
+    pygame.draw.ellipse(self.image,color,[0,0,width,height])
+ 
+
+    self.rect = self.image.get_rect()
+
+  def flying_fire_ball(self,x,y):
+    self.rect.x=x
+    self.rect.x=y
+
+
 #Calculate frozen time      
 sec=0
 start=0
@@ -240,7 +266,8 @@ def calc_frozen_time(end):
   global start
   global sec
 
-  if start==0:#start가 0인 경우 초기화, 아닌 경우 frozen 시작 시간 저장, 계산을 통해 시작 시각부터 현재까지의 5초 구함
+  #start가 0인 경우 초기화, 아닌 경우 frozen 시작 시간 저장, 계산을 통해 시작 시각부터 현재까지의 5초 구함
+  if start==0:
     start=time.time()
 
   sec=end-start
@@ -458,16 +485,16 @@ def startGame():
               continue #Pass Ghosts house
           else:
             block = Block(yellow, 4, 4)
-            fire_ball=Block(red,10,10)
+            fire_block=Block(red,10,10)
             freeze_block=Block(blue,10,10)
 
 
-            if ( row==0 and column==0):#fire block
-              fire_ball.rect.x=(30*column+6)+26
-              fire_ball.rect.y=(30*row+6)+26
+            if ( row==14 and column==10):#fire block
+              fire_block.rect.x=(30*column+6)+26
+              fire_block.rect.y=(30*row+6)+26
 
-              fire_block_list.add(fire_ball)
-              all_sprites_list.add(fire_ball)
+              fire_block_list.add(fire_block)
+              all_sprites_list.add(fire_block)
               
 
             elif (row==14 and column==11):#freeze block
@@ -558,6 +585,10 @@ def startGame():
 
       Pacman.update(wall_list,gate)
 
+      if fire_block_hit:
+        fire_ball=FireBall(62,62)
+        all_sprites_list.add(fire_ball)
+        
 
       if freeze_block_hit:
         frozen=True
