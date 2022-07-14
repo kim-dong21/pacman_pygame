@@ -14,7 +14,9 @@ red = (255,0,0)
 purple = (255,0,255)
 yellow   = ( 255, 255,   0)
 
-frozen_time=("5")
+frozen_time=(5)
+power_fireball_time=(10)
+
 
 
 Trollicon=pygame.image.load("E:/Pacman_py/Pacman/images/Trollman.png")
@@ -115,6 +117,7 @@ class Block(pygame.sprite.Sprite):
         # Create an image of the block, and fill it with a color.
         # This could also be an image loaded from the disk.
         self.image = pygame.Surface([width, height])
+
         self.image.fill(white)
         self.image.set_colorkey(white)
         pygame.draw.ellipse(self.image,color,[0,0,width,height])
@@ -126,16 +129,42 @@ class Block(pygame.sprite.Sprite):
         self.rect = self.image.get_rect() 
 
 
+#This is fireball class
+class FireBall(pygame.sprite.Sprite):
+    
+  flying_flag=False
+              #bullet's width,height , pacman's direction,position x,y
+  def __init__(self,width,height,direction,x,y):
+
+    pygame.sprite.Sprite.__init__(self) 
+
+    color=red
+    self.image = pygame.Surface([width, height])
+    self.image.fill(color)
+    self.image.set_colorkey(color)
+    pygame.draw.ellipse(self.image,color,[0,0,width,height])
+    self.direction=direction
+
+    self.rect = self.image.get_rect()
+
+
+  def flying_bullet(self):
+    
+
 
 
 
 # This class represents the bar at the bottom that the player controls
 class Player(pygame.sprite.Sprite):
-  
+
+    fireball_power_on=False
+    my_direction=""
+    
+
     # Set speed vector
     change_x=0
     change_y=0
-  
+
     # Constructor function
     def __init__(self,x,y, filename):
         # Call the parent's constructor
@@ -207,6 +236,16 @@ class Player(pygame.sprite.Sprite):
             self.rect.left=old_x
             self.rect.top=old_y
 
+    def direction(self,key):
+      if key == pygame.K_LEFT:
+        my_direction="LEFT"
+      if key == pygame.K_RIGHT:
+        my_direction="RIGHT"
+      if key == pygame.K_UP:
+        my_direction="UP"
+      if key == pygame.K_DOWN:
+        my_direction="DOWN"
+
 #Inheritime Player klassist
 class Ghost(Player):
 
@@ -236,26 +275,10 @@ class Ghost(Player):
          return [0,0]
 
 
-#This is fire ball class
-class FireBall:
 
-      
-  def __init__(self,width,height):
 
-    pygame.sprite.Sprite.__init__(self) 
- 
-    color=red
-    self.image = pygame.Surface([width, height])
-    self.image.fill(color)
-    self.image.set_colorkey(color)
-    pygame.draw.ellipse(self.image,color,[0,0,width,height])
- 
 
-    self.rect = self.image.get_rect()
 
-  def flying_fire_ball(self,x,y):
-    self.rect.x=x
-    self.rect.x=y
 
 
 #Calculate frozen time      
@@ -271,7 +294,7 @@ def calc_frozen_time(end):
     start=time.time()
 
   sec=end-start
-  sec=str(math.trunc(sec))
+  sec=math.trunc(sec)
   print(sec)
   return sec
 
@@ -435,6 +458,8 @@ def startGame():
 
   freeze_block_list=pygame.sprite.RenderPlain()
 
+  fire_bullet_list=pygame.sprite.RenderPlain()
+
   monsta_list = pygame.sprite.RenderPlain()
 
   pacman_collide = pygame.sprite.RenderPlain()
@@ -554,12 +579,16 @@ def startGame():
           if event.type == pygame.KEYDOWN:
               if event.key == pygame.K_LEFT:
                   Pacman.changespeed(-30,0)
+                  Pacman.direction(event.key)
               if event.key == pygame.K_RIGHT:
                   Pacman.changespeed(30,0)
+                  Pacman.direction(event.key)
               if event.key == pygame.K_UP:
                   Pacman.changespeed(0,-30)
+                  Pacman.direction(event.key)
               if event.key == pygame.K_DOWN:
                   Pacman.changespeed(0,30)
+                  Pacman.direction(event.key)
 
           if event.type == pygame.KEYUP:
               if event.key == pygame.K_LEFT:
@@ -582,13 +611,19 @@ def startGame():
       fire_block_hit=pygame.sprite.spritecollide(Pacman,fire_block_list,True)
       freeze_block_hit=pygame.sprite.spritecollide(Pacman,freeze_block_list,True)
 
-
       Pacman.update(wall_list,gate)
 
       if fire_block_hit:
-        fire_ball=FireBall(62,62)
-        all_sprites_list.add(fire_ball)
-        
+        Pacman.fireball_power_on=True
+      
+      if Pacman.fireball_power_on==True:
+        fireball=FireBall(5,5,Pacman.my_direction)
+        keys=pygame.key.get_pressed()
+        if keys[pygame.K_SPACE]:
+          print("fire")
+
+
+
 
       if freeze_block_hit:
         frozen=True
@@ -596,6 +631,7 @@ def startGame():
       if frozen:
         
         if frozen_time==calc_frozen_time(time.time()):
+          #지속시간이 끝나면 초기화
           global start
           start=0
           frozen=False
