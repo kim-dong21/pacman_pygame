@@ -2,6 +2,7 @@
 #https://github.com/hbokmann/Pacman
   
 from platform import python_branch
+from webbrowser import get
 import pygame
 import time
 import math
@@ -132,9 +133,8 @@ class Block(pygame.sprite.Sprite):
 #This is fireball class
 class FireBall(pygame.sprite.Sprite):
     
-  flying_flag=False
-              #bullet's width,height , pacman's direction,position x,y
-  def __init__(self,width,height,direction,x,y):
+              #bullet's width,height ,positions x,y
+  def __init__(self,width,height,x,y,direction):
 
     pygame.sprite.Sprite.__init__(self) 
 
@@ -142,13 +142,14 @@ class FireBall(pygame.sprite.Sprite):
     self.image = pygame.Surface([width, height])
     self.image.fill(color)
     self.image.set_colorkey(color)
-    pygame.draw.ellipse(self.image,color,[0,0,width,height])
-    self.direction=direction
-
+    pygame.draw.ellipse(self.image,color,[x,y,width,height])
     self.rect = self.image.get_rect()
+    self.direction=direction
+    self.fire_flag=False
 
-
-  def flying_bullet(self):
+  def flying_fireball(self,x,y):
+    self.rect.x=x
+    self.rect.y=y
     
 
 
@@ -470,6 +471,7 @@ def startGame():
 
 
   p_turn = 0
+  
   p_steps = 0
 
   b_turn = 0
@@ -617,10 +619,12 @@ def startGame():
         Pacman.fireball_power_on=True
       
       if Pacman.fireball_power_on==True:
-        fireball=FireBall(5,5,Pacman.my_direction)
-        keys=pygame.key.get_pressed()
-        if keys[pygame.K_SPACE]:
-          print("fire")
+        fireball=FireBall(6,6,Pacman.rect.x,Pacman.rect.y,Pacman.direction)
+        all_sprites_list.add(fireball)
+
+        key=pygame.key.get_pressed()
+        if key==key[pygame.K_SPACE]:
+          pass
 
 
 
