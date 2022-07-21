@@ -131,26 +131,9 @@ class Block(pygame.sprite.Sprite):
 
 
 #This is fireball class
-class FireBall(pygame.sprite.Sprite):
-    
-              #bullet's width,height ,positions x,y
-  def __init__(self,width,height,x,y,direction):
+class FireBall(Block):
 
-    pygame.sprite.Sprite.__init__(self) 
-
-    color=red
-    self.image = pygame.Surface([width, height])
-    self.image.fill(color)
-    self.image.set_colorkey(color)
-    pygame.draw.ellipse(self.image,color,[x,y,width,height])
-    self.rect = self.image.get_rect()
-    self.direction=direction
-    self.fire_flag=False
-
-  def flying_fireball(self,x,y):
-    self.rect.x=x
-    self.rect.y=y
-    
+  pass
 
 
 
@@ -239,13 +222,13 @@ class Player(pygame.sprite.Sprite):
 
     def direction(self,key):
       if key == pygame.K_LEFT:
-        my_direction="LEFT"
+        self.my_direction="LEFT"
       if key == pygame.K_RIGHT:
-        my_direction="RIGHT"
+        self.my_direction="RIGHT"
       if key == pygame.K_UP:
-        my_direction="UP"
+        self.my_direction="UP"
       if key == pygame.K_DOWN:
-        my_direction="DOWN"
+        self.my_direction="DOWN"
 
 #Inheritime Player klassist
 class Ghost(Player):
@@ -461,6 +444,14 @@ def startGame():
 
   fire_bullet_list=pygame.sprite.RenderPlain()
 
+  Pinky_hit_list=pygame.sprite.RenderPlain()
+
+  Blinky_hit_list=pygame.sprite.RenderPlain()
+
+  Inky_hit_list=pygame.sprite.RenderPlain()
+
+  Clyde_hit_list=pygame.sprite.RenderPlain()
+
   monsta_list = pygame.sprite.RenderPlain()
 
   pacman_collide = pygame.sprite.RenderPlain()
@@ -504,6 +495,8 @@ def startGame():
   Clyde=Ghost( c_w, m_h, "E:/Pacman_py/Pacman/images/Clyde.png" )
   monsta_list.add(Clyde)
   all_sprites_list.add(Clyde)
+
+
 
   # Draw the grid
   for row in range(19):#0 1 2 3 4 5 6 9 10 ...
@@ -564,13 +557,8 @@ def startGame():
 
   done = False
 
-  i = 0
-
   frozen=False
 
-  start_time=0
-  
-  end_time=0
 
   while done == False:
       # ALL EVENT PROCESSING SHOULD GO BELOW THIS COMMENT
@@ -601,7 +589,9 @@ def startGame():
                   Pacman.changespeed(0,30)
               if event.key == pygame.K_DOWN:
                   Pacman.changespeed(0,-30)
-          
+
+
+
       # ALL EVENT PROCESSING SHOULD GO ABOVE THIS COMMENT
       
       
@@ -612,21 +602,49 @@ def startGame():
       blocks_hit_list = pygame.sprite.spritecollide(Pacman, block_list, True)
       fire_block_hit=pygame.sprite.spritecollide(Pacman,fire_block_list,True)
       freeze_block_hit=pygame.sprite.spritecollide(Pacman,freeze_block_list,True)
+      Blinky_hit_list=pygame.sprite.spritecollide(Blinky,fire_bullet_list,True)
+      Inky_hit_list=pygame.sprite.spritecollide(Inky,fire_bullet_list,True)
+      Pinky_hit_list=pygame.sprite.spritecollide(Pinky,fire_bullet_list,True)
+      Clyde_hit_list=pygame.sprite.spritecollide(Clyde,fire_bullet_list,True)
+      
 
       Pacman.update(wall_list,gate)
 
       if fire_block_hit:
         Pacman.fireball_power_on=True
+        print("you ate fire ball")
       
       if Pacman.fireball_power_on==True:
-        fireball=FireBall(6,6,Pacman.rect.x,Pacman.rect.y,Pacman.direction)
-        all_sprites_list.add(fireball)
-
         key=pygame.key.get_pressed()
-        if key==key[pygame.K_SPACE]:
-          pass
+        if key[pygame.K_SPACE]:
+          print("fire")
+          bullet=FireBall(red,6,6)
+          bullet.rect.x=Pacman.rect.centerx
+          bullet.rect.y=Pacman.rect.centery
+          fire_bullet_list.add(bullet)
+          all_sprites_list.add(bullet)
+          
 
 
+      if Blinky_hit_list:
+        Blinky.rect.x=w
+        Blinky.rect.y=b_h
+
+
+      if Pinky_hit_list:
+        Pinky.rect.x=w
+        Pinky.rect.y=b_h
+
+      
+      if Inky_hit_list:
+        Inky.rect.x=w
+        Inky.rect.y=b_h
+
+
+      if Clyde_hit_list:
+        Clyde.rect.x=w
+        Clyde.rect.y=b_h
+      
 
 
       if freeze_block_hit:
