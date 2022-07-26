@@ -95,7 +95,7 @@ def setupRoomOne(all_sprites_list):
         wall=Wall(item[0],item[1],item[2],item[3],blue)
         wall_list.add(wall)
         all_sprites_list.add(wall)
-         
+        
     # return our new list
     return wall_list
 
@@ -411,7 +411,7 @@ cl = len(Clyde_directions)-1
 
 # Call this function so the Pygame library can initialize itself
 pygame.init()
-  
+
 # Create an 606x606 sized screen
 screen = pygame.display.set_mode([606, 606])
 
@@ -427,7 +427,7 @@ background = pygame.Surface(screen.get_size())
 
 # Used for converting color maps and such
 background = background.convert()
-  
+
 # Fill the screen with a black background
 background.fill(black)
 
@@ -624,7 +624,10 @@ def startGame():
       Inky_hit_list=pygame.sprite.spritecollide(Inky,fire_bullet_list,True)
       Pinky_hit_list=pygame.sprite.spritecollide(Pinky,fire_bullet_list,True)
       Clyde_hit_list=pygame.sprite.spritecollide(Clyde,fire_bullet_list,True)
-      bullet_hit_list=pygame.sprite.spritecollide(fire_bullet_list,wall_list,True)
+
+      #check the bullets collide to the walls
+      pygame.sprite.groupcollide(wall_list,bullets,False,True)
+
 
       Pacman.update(wall_list,gate)
 
