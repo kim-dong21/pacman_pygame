@@ -133,7 +133,21 @@ class Block(pygame.sprite.Sprite):
 #This is fireball class
 class FireBall(Block):
 
-  pass
+  def __init__(self, color, width, height,p_dir,x,y):
+    super().__init__(color, width, height)
+    self.p_dir=p_dir
+    self.rect.x=x
+    self.rect.y=y
+
+  def update(self):
+    if self.p_dir=="RIGHT":
+      self.rect.x+=30
+    elif self.p_dir=="LEFT":
+      self.rect.x-=30
+    elif self.p_dir=="UP":
+      self.rect.y-=30
+    elif self.p_dir=="DOWN":
+      self.rect.y+=30
 
 
 
@@ -444,6 +458,10 @@ def startGame():
 
   fire_bullet_list=pygame.sprite.RenderPlain()
 
+  bullets=pygame.sprite.RenderPlain()
+
+  bullet_hit_list=pygame.sprite.RenderPlain()
+
   Pinky_hit_list=pygame.sprite.RenderPlain()
 
   Blinky_hit_list=pygame.sprite.RenderPlain()
@@ -606,7 +624,7 @@ def startGame():
       Inky_hit_list=pygame.sprite.spritecollide(Inky,fire_bullet_list,True)
       Pinky_hit_list=pygame.sprite.spritecollide(Pinky,fire_bullet_list,True)
       Clyde_hit_list=pygame.sprite.spritecollide(Clyde,fire_bullet_list,True)
-      
+      bullet_hit_list=pygame.sprite.spritecollide(fire_bullet_list,wall_list,True)
 
       Pacman.update(wall_list,gate)
 
@@ -618,13 +636,15 @@ def startGame():
         key=pygame.key.get_pressed()
         if key[pygame.K_SPACE]:
           print("fire")
-          bullet=FireBall(red,6,6)
-          bullet.rect.x=Pacman.rect.centerx
-          bullet.rect.y=Pacman.rect.centery
+          bullet=FireBall(red,6,6,Pacman.my_direction,Pacman.rect.centerx,Pacman.rect.centery)
           fire_bullet_list.add(bullet)
           all_sprites_list.add(bullet)
-          
+          bullets.add(bullet)
+      bullets.update()
+      
+      
 
+      
 
       if Blinky_hit_list:
         Blinky.rect.x=w
