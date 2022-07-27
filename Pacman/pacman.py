@@ -275,9 +275,9 @@ class Ghost(Player):
 
 
 
-
-
-
+#to calculate power block time 
+power_second=0
+power_start=0
 
 #Calculate frozen time      
 sec=0
@@ -296,6 +296,18 @@ def calc_frozen_time(end):
   print(sec)
   return sec
 
+#팩맨 슈퍼파워 지속 시간 계산
+def calc_power_time(end):
+  global power_start
+  global power_second
+
+  if power_start==0:
+    power_start=time.time()
+
+  power_second=end-power_start
+  power_second=math.trunc(power_second)
+  print(power_second)
+  return power_second
 
 
 Pinky_directions = [
@@ -456,6 +468,10 @@ def startGame():
 
   freeze_block_list=pygame.sprite.RenderPlain()
 
+  super_block_list=pygame.sprite.RenderPlain()
+
+  super_block_hit=pygame.sprite.RenderPlain()
+
   fire_bullet_list=pygame.sprite.RenderPlain()
 
   bullets=pygame.sprite.RenderPlain()
@@ -525,7 +541,7 @@ def startGame():
             block = Block(yellow, 4, 4)
             fire_block=Block(red,10,10)
             freeze_block=Block(blue,10,10)
-
+            super_block=Block(green,10,10)
 
             if ( row==14 and column==10):#fire block
               fire_block.rect.x=(30*column+6)+26
@@ -542,6 +558,13 @@ def startGame():
               freeze_block_list.add(freeze_block)
               all_sprites_list.add(freeze_block)
 
+
+            elif (row==14 and column==6):
+              super_block.rect.x=(30*column+6)+26
+              super_block.rect.y=(30*row+6)+26
+
+              super_block_list.add(super_block)
+              all_sprites_list.add(super_block)
 
             else:
             # Set a random location for the block
@@ -620,6 +643,9 @@ def startGame():
       blocks_hit_list = pygame.sprite.spritecollide(Pacman, block_list, True)
       fire_block_hit=pygame.sprite.spritecollide(Pacman,fire_block_list,True)
       freeze_block_hit=pygame.sprite.spritecollide(Pacman,freeze_block_list,True)
+      super_block_hit=pygame.sprite.spritecollide(Pacman,super_block_list,True)
+
+      #Ghosts Hit by bullets logic
       Blinky_hit_list=pygame.sprite.spritecollide(Blinky,fire_bullet_list,True)
       Inky_hit_list=pygame.sprite.spritecollide(Inky,fire_bullet_list,True)
       Pinky_hit_list=pygame.sprite.spritecollide(Pinky,fire_bullet_list,True)
@@ -635,7 +661,12 @@ def startGame():
         Pacman.fireball_power_on=True
         print("you ate fire ball")
       
-      if Pacman.fireball_power_on==True:
+      if power_fireball_time==calc_power_time(time.time()):
+        global power_start
+        power_start=0
+        Pacman.fireball_power_on=False
+
+      if Pacman.fireball_power_on:
         key=pygame.key.get_pressed()
         if key[pygame.K_SPACE]:
           print("fire")
@@ -644,6 +675,12 @@ def startGame():
           all_sprites_list.add(bullet)
           bullets.add(bullet)
       bullets.update()
+
+
+      
+
+
+      
       
       
 
