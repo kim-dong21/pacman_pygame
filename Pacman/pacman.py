@@ -156,6 +156,7 @@ class FireBall(Block):
 class Player(pygame.sprite.Sprite):
 
     fireball_power_on=False
+    super_power_on=False
     my_direction=""
     
 
@@ -308,6 +309,9 @@ def calc_power_time(end):
   power_second=math.trunc(power_second)
   print(power_second)
   return power_second
+
+
+
 
 
 Pinky_directions = [
@@ -485,6 +489,8 @@ def startGame():
   Inky_hit_list=pygame.sprite.RenderPlain()
 
   Clyde_hit_list=pygame.sprite.RenderPlain()
+
+  Pacman_hit_ghosts_list=pygame.sprite.RenderPlain()
 
   monsta_list = pygame.sprite.RenderPlain()
 
@@ -772,7 +778,19 @@ def startGame():
       if score == bll:
         doNext("Congratulations, you won!",145,all_sprites_list,block_list,monsta_list,pacman_collide,wall_list,gate)
 
-      monsta_hit_list = pygame.sprite.spritecollide(Pacman, monsta_list, False)
+
+      #팩맨 슈퍼블록 먹을시
+      if super_block_hit:
+        Pacman.super_power_on=True
+      
+      #슈퍼파워 타임 동안 고스트들은 팩맥에게 먹힘
+      if Pacman.super_power_on:
+        Pacman_hit_ghosts_list=pygame.sprite.spritecollide(Pacman,monsta_list,False)
+
+      #타임 해제
+      else:
+        monsta_hit_list = pygame.sprite.spritecollide(Pacman, monsta_list, False)
+
 
       if monsta_hit_list:
         doNext("Game Over",235,all_sprites_list,block_list,monsta_list,pacman_collide,wall_list,gate)
