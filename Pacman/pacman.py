@@ -247,7 +247,11 @@ class Player(pygame.sprite.Sprite):
 
 #Inheritime Player klassist
 class Ghost(Player):
+    
 
+    def reset_postion(self):
+      self.rect.x=w
+      self.rect.y=b_h
     
     # Change the speed of the ghost
     def changespeed(self,list,ghost,turn,steps,l):
@@ -666,13 +670,15 @@ def startGame():
       if fire_block_hit:
         Pacman.fireball_power_on=True
         print("you ate fire ball")
+
       
-      if power_fireball_time==calc_power_time(time.time()):
-        global power_start
-        power_start=0
-        Pacman.fireball_power_on=False
 
       if Pacman.fireball_power_on:
+        if power_fireball_time==calc_power_time(time.time()):
+          global power_start
+          power_start=0
+          Pacman.fireball_power_on=False
+        
         key=pygame.key.get_pressed()
         if key[pygame.K_SPACE]:
           print("fire")
@@ -681,35 +687,22 @@ def startGame():
           all_sprites_list.add(bullet)
           bullets.add(bullet)
       bullets.update()
-
-
+        
       
-
-
-      
-      
-      
-
-      
-
       if Blinky_hit_list:
-        Blinky.rect.x=w
-        Blinky.rect.y=b_h
+        Blinky.reset_postion()
 
 
       if Pinky_hit_list:
-        Pinky.rect.x=w
-        Pinky.rect.y=b_h
+        Pinky.reset_postion()
 
       
       if Inky_hit_list:
-        Inky.rect.x=w
-        Inky.rect.y=b_h
+        Inky.reset_postion()
 
 
       if Clyde_hit_list:
-        Clyde.rect.x=w
-        Clyde.rect.y=b_h
+        Clyde.reset_postion()
       
 
 
@@ -783,11 +776,44 @@ def startGame():
       if super_block_hit:
         Pacman.super_power_on=True
       
+      Blinky_hit=False
+      Inky_hit=False
+      Pinky_hit=False
+      Clyde_hit=False
+
       #슈퍼파워 타임 동안 고스트들은 팩맥에게 먹힘
       if Pacman.super_power_on:
-        Pacman_hit_ghosts_list=pygame.sprite.spritecollide(Pacman,monsta_list,False)
+        if power_fireball_time==calc_power_time(time.time()):
+          Pacman.super_power_on=False
+          #시간 시작 시간 초기화
+          global power_start
+          power_start=0
 
-      #타임 해제
+        Blinky_hit=pygame.sprite.collide_rect(Pacman,Blinky)
+        Inky_hit=pygame.sprite.collide_rect(Pacman,Inky)
+        Pinky_hit=pygame.sprite.collide_rect(Pacman,Pinky)
+        Clyde_hit=pygame.sprite.collide_rect(Pacman,Clyde)
+
+
+      if Blinky_hit:
+        print("Blinky hit")
+        Blinky.reset_postion()
+        
+
+      if Inky_hit:
+        print("Inky hit")
+        Inky.reset_postion()
+        
+
+      if Pinky_hit:
+        print("Pinky hit")
+        Pinky.reset_postion()
+
+      if Clyde_hit:
+        print("Clyde hit")
+        Clyde.reset_postion()
+        
+      #수퍼타임 해제
       else:
         monsta_hit_list = pygame.sprite.spritecollide(Pacman, monsta_list, False)
 
