@@ -1,6 +1,7 @@
 #Pacman in Python with PyGame
 #https://github.com/hbokmann/Pacman
   
+from glob import glob
 from platform import python_branch
 from webbrowser import get
 import pygame
@@ -254,9 +255,11 @@ class Ghost(Player):
       self.rect.y=b_h
     
     # Change the speed of the ghost
+    #list=Ghost_direction,ghost=False,l=방향 길이
     def changespeed(self,list,ghost,turn,steps,l):
       try:
-        z=list[turn][2]
+        z=list[turn][2]#발걸음 수 가 저장된 배열
+        #list속 지정된 발걸음을 넘으면 방향을 바꿈
         if steps < z:
           self.change_x=list[turn][0]
           self.change_y=list[turn][1]
@@ -264,10 +267,13 @@ class Ghost(Player):
 
         #방향을 계속 바꿔줌
         else:
+          #배열 길이 내 인 경우
           if turn < l:
             turn+=1
+          #현재 방향을 바꾸는 고스트가 Clyde인 경우
           elif ghost == "clyde":
             turn = 2
+          #배열 밖인 경우
           else:
             turn = 0
           self.change_x=list[turn][0]
@@ -278,7 +284,9 @@ class Ghost(Player):
          return [0,0]
 
 
-
+#to Calculate fireball power time
+fireball_second=0
+fireball_start=0
 
 #to calculate power block time 
 power_second=0
@@ -300,6 +308,19 @@ def calc_frozen_time(end):
   sec=math.trunc(sec)
   print(sec)
   return sec
+
+def calc_fire_power_time(end):
+  global fireball_start
+  global fireball_second
+
+  if fireball_start==0:
+    fireball_start=time.time()
+
+  fireball_second=end-fireball_start
+  fireball_second=math.trunc(fireball_second)
+  print(fireball_second)
+  return fireball_second
+
 
 #팩맨 슈퍼파워 지속 시간 계산
 def calc_power_time(end):
@@ -674,9 +695,7 @@ def startGame():
       
 
       if Pacman.fireball_power_on:
-        if power_fireball_time==calc_power_time(time.time()):
-          global power_start
-          power_start=0
+        if power_fireball_time==calc_fire_power_time(time.time()):
           Pacman.fireball_power_on=False
         
         key=pygame.key.get_pressed()
@@ -713,13 +732,11 @@ def startGame():
         
         if frozen_time==calc_frozen_time(time.time()):
           #지속시간이 끝나면 초기화
-          global start
-          start=0
           frozen=False
 
           
           
-      else:
+      else:#                                             p_turn=0,p_steps=0,pl=Pinky 방향 배열 길이
         returned = Pinky.changespeed(Pinky_directions,False,p_turn,p_steps,pl)
         p_turn = returned[0]
         p_steps = returned[1]
@@ -785,9 +802,7 @@ def startGame():
       if Pacman.super_power_on:
         if power_fireball_time==calc_power_time(time.time()):
           Pacman.super_power_on=False
-          #시간 시작 시간 초기화
-          global power_start
-          power_start=0
+          
 
         Blinky_hit=pygame.sprite.collide_rect(Pacman,Blinky)
         Inky_hit=pygame.sprite.collide_rect(Pacman,Inky)
@@ -844,6 +859,15 @@ def doNext(message,left,all_sprites_list,block_list,monsta_list,pacman_collide,w
             del wall_list
             del gate
             startGame()
+
+
+      #reset power time
+      global power_start
+      global fireball_start
+      global start
+      power_start=0
+      fireball_start=0
+      start=0
 
       #Grey background
       w = pygame.Surface((400,200))  # the size of your rect
