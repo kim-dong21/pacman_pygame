@@ -19,7 +19,7 @@ yellow   = ( 255, 255,   0)
 
 frozen_time=(5)
 power_fireball_time=(10)
-
+super_block_time=(5)
 
 
 Trollicon=pygame.image.load("E:/Pacman_py/Pacman/images/Trollman.png")
@@ -251,6 +251,15 @@ class Player(pygame.sprite.Sprite):
 #Inheritime Player klassist
 class Ghost(Player):
     
+
+
+    def IsTheSameWay(self,pacman):
+      if self.rect.x==pacman.rect.x:
+        return True
+
+      elif self.rect.y==pacman.rect.y:
+        return True
+
 
     #running away from pacman
     def panic(self,x,y):
@@ -646,8 +655,10 @@ def startGame():
 
   done = False
 
-  power_flag=False
 
+  frozen=False
+  
+  
   while done == False:
       # ALL EVENT PROCESSING SHOULD GO BELOW THIS COMMENT
       for event in pygame.event.get():
@@ -744,21 +755,24 @@ def startGame():
 
       if freeze_block_hit:
         frozen=True
-        power_flag=True
+        
 
-      if power_flag:
+      
         
         
-        if frozen:
-          if frozen_time==calc_frozen_time(time.time()):
+      if frozen:
+        if frozen_time==calc_frozen_time(time.time()):
           #지속시간이 끝나면 초기화
-            frozen=False
-            power_flag=False
-
-        elif super_block_flag:
-          pass
+          frozen=False
           
-      else:#                                             p_turn=0,p_steps=0,pl=Pinky 방향 배열 길이
+            
+
+      else:
+
+
+        if Pacman.super_power_on==True and 
+        
+                                                    #p_turn=0,p_steps=0,pl=Pinky 방향 배열 길이
         returned = Pinky.changespeed(Pinky_directions,False,p_turn,p_steps,pl)
         p_turn = returned[0]
         p_steps = returned[1]
@@ -814,7 +828,7 @@ def startGame():
       #팩맨 슈퍼블록 먹을시
       if super_block_hit:
         Pacman.super_power_on=True
-        super_block_flag=True
+        
       
       Blinky_hit=False
       Inky_hit=False
@@ -823,11 +837,7 @@ def startGame():
 
       #슈퍼파워 타임 동안 고스트들은 팩맥에게 먹힘
       if Pacman.super_power_on:
-        power_flag=True
-        if power_fireball_time==calc_power_time(time.time()):
-          Pacman.super_power_on=False
 
-          
 
         Blinky_hit=pygame.sprite.collide_rect(Pacman,Blinky)
         Inky_hit=pygame.sprite.collide_rect(Pacman,Inky)
