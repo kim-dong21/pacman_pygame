@@ -266,6 +266,7 @@ class Ghost(Player):
       if self.rect.x==x:
         if self.rect.y<y:
           self.rect.y-=30
+          
         else:
           self.rect.y+=30
 
@@ -769,45 +770,55 @@ def startGame():
 
       else:
 
+        if Pacman.super_power_on==True:
+          if Blinky.IsTheSameWay(Pacman):
+          
+          #only Blinky is panic
+            Blinky.panic(Pacman.rect.x,Pacman.rect.y)
+            print("Blinky panic")
+          
 
-        if Pacman.super_power_on==True and Blinky.IsTheSameWay(Pacman):
-          Blinky.panic(Pacman.rect.x,Pacman.rect.y)
-        
-        elif Pacman.super_power_on==True and Pinky.IsTheSameWay(Pacman):
-          Pinky.panic(Pacman.rect.x,Pacman.rect.y)
-        
-        elif Pacman.super_power_on==True and Inky.IsTheSameWay(Pacman):
-          Inky.panic(Pacman.rect.x,Pacman.rect.y)
+          if Pinky.IsTheSameWay(Pacman):
+          
+          #only Pinky is panic
+            Pinky.panic(Pacman.rect.x,Pacman.rect.y)
+            print("Pinky panic")
+          
 
-        elif Pacman.super_power_on==True and Clyde.IsTheSameWay(Pacman):
-          Clyde.panic(Pacman.rect.x,Pacman.rect.y)
-        
-        else:
-        
+          if Inky.IsTheSameWay(Pacman):
+            Inky.panic(Pacman.rect.x,Pacman.rect.y)
+            print("Inky panic")
+          
+
+          if Clyde.IsTheSameWay(Pacman):
+            Clyde.panic(Pacman.rect.x,Pacman.rect.y)
+            print("Clyde panic")
+          
+      
                                                     #p_turn=0,p_steps=0,pl=Pinky 방향 배열 길이
-          returned = Pinky.changespeed(Pinky_directions,False,p_turn,p_steps,pl)
-          p_turn = returned[0]
-          p_steps = returned[1]
-          Pinky.changespeed(Pinky_directions,False,p_turn,p_steps,pl)
-          Pinky.update(wall_list,False)
+        returned = Pinky.changespeed(Pinky_directions,False,p_turn,p_steps,pl)
+        p_turn = returned[0]
+        p_steps = returned[1]
+        Pinky.changespeed(Pinky_directions,False,p_turn,p_steps,pl)
+        Pinky.update(wall_list,False)
 
-          returned = Blinky.changespeed(Blinky_directions,False,b_turn,b_steps,bl)
-          b_turn = returned[0]
-          b_steps = returned[1]
-          Blinky.changespeed(Blinky_directions,False,b_turn,b_steps,bl)
-          Blinky.update(wall_list,False)
+        returned = Blinky.changespeed(Blinky_directions,False,b_turn,b_steps,bl)
+        b_turn = returned[0]
+        b_steps = returned[1]
+        Blinky.changespeed(Blinky_directions,False,b_turn,b_steps,bl)
+        Blinky.update(wall_list,False)
 
-          returned = Inky.changespeed(Inky_directions,False,i_turn,i_steps,il)
-          i_turn = returned[0]
-          i_steps = returned[1]
-          Inky.changespeed(Inky_directions,False,i_turn,i_steps,il)
-          Inky.update(wall_list,False)
+        returned = Inky.changespeed(Inky_directions,False,i_turn,i_steps,il)
+        i_turn = returned[0]
+        i_steps = returned[1]
+        Inky.changespeed(Inky_directions,False,i_turn,i_steps,il)
+        Inky.update(wall_list,False)
 
-          returned = Clyde.changespeed(Clyde_directions,"clyde",c_turn,c_steps,cl)
-          c_turn = returned[0]
-          c_steps = returned[1]
-          Clyde.changespeed(Clyde_directions,"clyde",c_turn,c_steps,cl)
-          Clyde.update(wall_list,False)
+        returned = Clyde.changespeed(Clyde_directions,"clyde",c_turn,c_steps,cl)
+        c_turn = returned[0]
+        c_steps = returned[1]
+        Clyde.changespeed(Clyde_directions,"clyde",c_turn,c_steps,cl)
+        Clyde.update(wall_list,False)
 
 
       # See if the Pacman block has collided with anything.
