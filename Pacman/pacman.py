@@ -532,8 +532,6 @@ def startGame():
 
   bullets=pygame.sprite.RenderPlain()
 
-  bullet_hit_list=pygame.sprite.RenderPlain()
-
   Pinky_hit_list=pygame.sprite.RenderPlain()
 
   Blinky_hit_list=pygame.sprite.RenderPlain()
@@ -541,8 +539,6 @@ def startGame():
   Inky_hit_list=pygame.sprite.RenderPlain()
 
   Clyde_hit_list=pygame.sprite.RenderPlain()
-
-  Pacman_hit_ghosts_list=pygame.sprite.RenderPlain()
 
   monsta_list = pygame.sprite.RenderPlain()
 
@@ -617,7 +613,7 @@ def startGame():
               all_sprites_list.add(freeze_block)
 
 
-            elif (row==14 and column==6):
+            elif (row==14 and column==6):#super block
               super_block.rect.x=(30*column+6)+26
               super_block.rect.y=(30*row+6)+26
 
@@ -721,7 +717,6 @@ def startGame():
         Pacman.fireball_power_on=True
         print("you ate fire ball")
 
-      
 
       if Pacman.fireball_power_on:
         if power_fireball_time==calc_fire_power_time(time.time()):
@@ -751,8 +746,6 @@ def startGame():
 
       if Clyde_hit_list:
         Clyde.reset_postion()
-      
-
 
       if freeze_block_hit:
         frozen=True
@@ -789,6 +782,7 @@ def startGame():
             Inky.panic(Pacman.rect.x,Pacman.rect.y)
             print("Inky panic")
           
+
 
           if Clyde.IsTheSameWay(Pacman):
             Clyde.panic(Pacman.rect.x,Pacman.rect.y)
