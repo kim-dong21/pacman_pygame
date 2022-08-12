@@ -1,10 +1,6 @@
 #Pacman in Python with PyGame
 #https://github.com/hbokmann/Pacman
   
-from glob import glob
-from platform import python_branch
-import re
-from webbrowser import get
 import pygame
 import time
 import math
@@ -163,9 +159,23 @@ class Player(pygame.sprite.Sprite):
     my_direction=""
     
 
+
     # Set speed vector
     change_x=0
     change_y=0
+
+
+
+    def is_panic_range(self,ghostx,ghosty):
+      if self.rect.x+50>ghostx or self.rect.x-50<ghostx and self.rect.y==ghosty:
+        return True
+      elif self.rect.y+50>ghosty or self.rect.y-50<ghosty and self.rect.x==ghostx:
+        return True
+      else : 
+        return False
+      
+      
+
 
     # Constructor function
     def __init__(self,x,y, filename):
@@ -251,15 +261,6 @@ class Player(pygame.sprite.Sprite):
 #Inheritime Player klassist
 class Ghost(Player):
     
-
-
-    def IsTheSameWay(self,pacman):
-      if self.rect.x==pacman.rect.x:
-        return True
-
-      elif self.rect.y==pacman.rect.y:
-        return True
-
 
     #running away from pacman
     def panic(self,x,y):
@@ -764,27 +765,28 @@ def startGame():
       else:
 
         if Pacman.super_power_on==True:
-          if Blinky.IsTheSameWay(Pacman):
+          if Pacman.is_panic_range(Blinky.rect.x,Blinky.rect.y):
           
           #only Blinky is panic
             Blinky.panic(Pacman.rect.x,Pacman.rect.y)
             print("Blinky panic")
+
           
 
-          if Pinky.IsTheSameWay(Pacman):
+          if Pacman.is_panic_range(Pinky.rect.x,Pinky.rect.y):
           
           #only Pinky is panic
             Pinky.panic(Pacman.rect.x,Pacman.rect.y)
             print("Pinky panic")
           
 
-          if Inky.IsTheSameWay(Pacman):
+          if Pacman.is_panic_range(Inky.rect.x,Inky.rect.y):
             Inky.panic(Pacman.rect.x,Pacman.rect.y)
             print("Inky panic")
           
 
 
-          if Clyde.IsTheSameWay(Pacman):
+          if Pacman.is_panic_range(Clyde.rect.x,Clyde.rect.y):
             Clyde.panic(Pacman.rect.x,Pacman.rect.y)
             print("Clyde panic")
           
