@@ -167,9 +167,9 @@ class Player(pygame.sprite.Sprite):
 
 
     def is_panic_range(self,ghostx,ghosty):
-      if self.rect.x+50>ghostx or self.rect.x-50<ghostx and self.rect.y==ghosty:
+      if self.rect.x+50>ghostx<self.rect.x-50 and self.rect.y==ghosty:
         return True
-      elif self.rect.y+50>ghosty or self.rect.y-50<ghosty and self.rect.x==ghostx:
+      elif self.rect.y+50>ghosty<self.rect.y-50 and self.rect.x==ghostx:
         return True
       else : 
         return False
