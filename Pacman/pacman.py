@@ -263,22 +263,33 @@ class Ghost(Player):
     
 
     #running away from pacman
-    def panic(self,x,y):
-      #팩맨과 x가 같은 줄
-      if self.rect.x==x:
-        #팩맨 y의 반대 방향으로 도망
-        if self.rect.y<y:
-          self.rect.y-=30
-        else:
-          self.rect.y+=30
+    def panic(self,x,y,walls):
 
-      #팩맨과 y가 같은 줄
-      elif self.rect.y==y:
-        #팩맨 x의 반대 방향으로 도망
-        if self.rect.x<x:
-          self.rect.x-=30
-        else:
-          self.rect.x+=30
+      collide=pygame.sprite.spritecollide(self,walls,False)
+
+      #벽에 부딫힐시
+      if collide:
+        pass
+
+
+      
+      else :
+
+        #팩맨과 x가 같은 줄
+        if self.rect.x==x:
+          #팩맨 y의 반대 방향으로 도망
+          if self.rect.y<y:
+            self.rect.y-=30
+          else:
+            self.rect.y+=30
+
+        #팩맨과 y가 같은 줄
+        elif self.rect.y==y:
+          #팩맨 x의 반대 방향으로 도망 
+          if self.rect.x<x:
+            self.rect.x-=30
+          else:
+            self.rect.x+=30
 
 
     def reset_postion(self):
@@ -771,7 +782,7 @@ def startGame():
           if Pacman.is_panic_range(Blinky.rect.x,Blinky.rect.y):
           
           #only Blinky is panic
-            Blinky.panic(Pacman.rect.x,Pacman.rect.y)
+            Blinky.panic(Pacman.rect.x,Pacman.rect.y,wall_list)
             print("Blinky panic")
 
           
@@ -779,18 +790,18 @@ def startGame():
           if Pacman.is_panic_range(Pinky.rect.x,Pinky.rect.y):
           
           #only Pinky is panic
-            Pinky.panic(Pacman.rect.x,Pacman.rect.y)
+            Pinky.panic(Pacman.rect.x,Pacman.rect.y,wall_list)
             print("Pinky panic")
           
 
           if Pacman.is_panic_range(Inky.rect.x,Inky.rect.y):
-            Inky.panic(Pacman.rect.x,Pacman.rect.y)
+            Inky.panic(Pacman.rect.x,Pacman.rect.y,wall_list)
             print("Inky panic")
           
 
 
           if Pacman.is_panic_range(Clyde.rect.x,Clyde.rect.y):
-            Clyde.panic(Pacman.rect.x,Pacman.rect.y)
+            Clyde.panic(Pacman.rect.x,Pacman.rect.y,wall_list)
             print("Clyde panic")
           
       
