@@ -525,7 +525,7 @@ font = pygame.font.Font("freesansbold.ttf", 24)
 w = 303-16 #Width
 p_h = (7*60)+19 #Pacman height
 m_h = (4*60)+19 #Monster height
-b_h = (3*60)+19 #Binky height
+b_h = (3*60)+19 #Blinky height
 i_w = 303-16-32 #Inky width
 c_w = 303+(32-16) #Clyde width
 
@@ -766,7 +766,8 @@ def startGame():
         frozen=True
         
 
-      
+      print("inky x:",Inky.rect.x,"inky y:",Inky.rect.y)
+      print("pacman x:",Pacman.rect.x,"pacman y:",Pacman.rect.y)
         
         
       if frozen:
@@ -794,13 +795,13 @@ def startGame():
             print("Pinky panic")
           
 
-          if Pacman.is_panic_range(Inky.rect.x,Inky.rect.y):
+          if Pacman.is_panic_range(Inky.rect.centerx,Inky.rect.y):
             Inky.panic(Pacman.rect.x,Pacman.rect.y,wall_list)
             print("Inky panic")
           
 
 
-          if Pacman.is_panic_range(Clyde.rect.x,Clyde.rect.y):
+          if Pacman.is_panic_range(Clyde.rect.centerx,Clyde.rect.y):
             Clyde.panic(Pacman.rect.x,Pacman.rect.y,wall_list)
             print("Clyde panic")
           
