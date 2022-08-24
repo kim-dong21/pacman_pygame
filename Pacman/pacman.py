@@ -526,8 +526,8 @@ w = 303-16 #Width
 p_h = (7*60)+19 #Pacman height
 m_h = (4*60)+19 #Monster height
 b_h = (3*60)+19 #Blinky height
-i_w = 303-16-32 #Inky width
-c_w = 303+(32-16) #Clyde width
+i_w = 305-16-32 #Inky width
+c_w = 305+(32-16) #Clyde width
 
 def startGame():
 
