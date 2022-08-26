@@ -32,7 +32,10 @@ class Wall(pygame.sprite.Sprite):
     def __init__(self,x,y,width,height, color):
         # Call the parent's constructor
         pygame.sprite.Sprite.__init__(self)
-  
+        self.width=width
+        self.height=height
+        self.x=x
+        self.y=y
         # Make a blue wall, of the size specified in the parameters
         self.image = pygame.Surface([width, height])
         self.image.fill(color)
@@ -53,7 +56,7 @@ def setupRoomOne(all_sprites_list):
               [0,600,606,6],
               [600,0,6,606],
               [300,0,6,66],
-              [60,60,186,6],
+              [60,60,186,6], 
               [360,60,186,6],
               [60,120,66,6],
               [60,120,6,126],
@@ -165,14 +168,32 @@ class Player(pygame.sprite.Sprite):
     change_y=0
 
 
+    #to check if the walls exist between pacman,ghosts
+    def is_wall(self,gx,gy,walls):
+      #x position
+      for w in walls:
+        if w.width==6:
+          if self.rect.x<w.x and gx>w.x:
+            return True
+            
+      #y position
+        else:
+          if self.rect.y<w.y and gy>w.y:
+            return True
+        
 
-    def is_panic_range(self,ghostx,ghosty):
-      if self.rect.x+100>ghostx>self.rect.x-100 and self.rect.y==ghosty:
-        return True
-      elif self.rect.y+100>ghosty>self.rect.y-100 and self.rect.x==ghostx:
-        return True
-      else : 
+    def is_panic_range(self,ghostx,ghosty,walls):
+
+      if self.is_wall(ghostx,ghosty,walls):
         return False
+
+      else:
+        if self.rect.x+100>ghostx>self.rect.x-100 and self.rect.y==ghosty:
+          return True
+        elif self.rect.y+100>ghosty>self.rect.y-100 and self.rect.x==ghostx:
+          return True
+        else : 
+          return False
       
       
 
@@ -529,7 +550,7 @@ p_h = (7*60)+19 #Pacman height
 m_h = (4*60)+19 #Monster height
 b_h = (3*60)+19 #Blinky height
 i_w = 305-16-32 #Inky width
-c_w = 305+(32-16) #Clyde width
+c_w = 301+(32-16) #Clyde width
 
 def startGame():
 
@@ -767,10 +788,6 @@ def startGame():
       if freeze_block_hit:
         frozen=True
         
-
-      print("inky x:",Inky.rect.x,"inky y:",Inky.rect.y)
-      print("pacman x:",Pacman.rect.x,"pacman y:",Pacman.rect.y)
-        
         
       if frozen:
         if frozen_time==calc_frozen_time(time.time()):
@@ -782,7 +799,7 @@ def startGame():
       else:
 
         if Pacman.super_power_on==True:
-          if Pacman.is_panic_range(Blinky.rect.x,Blinky.rect.y):
+          if Pacman.is_panic_range(Blinky.rect.x,Blinky.rect.y,wall_list):
           
           #only Blinky is panic
             Blinky.panic(Pacman.rect.x,Pacman.rect.y,wall_list)
@@ -790,20 +807,20 @@ def startGame():
 
           
 
-          if Pacman.is_panic_range(Pinky.rect.x,Pinky.rect.y):
+          if Pacman.is_panic_range(Pinky.rect.x,Pinky.rect.y,wall_list):
           
           #only Pinky is panic
             Pinky.panic(Pacman.rect.x,Pacman.rect.y,wall_list)
             print("Pinky panic")
           
 
-          if Pacman.is_panic_range(Inky.rect.centerx,Inky.rect.y):
+          if Pacman.is_panic_range(Inky.rect.x,Inky.rect.y,wall_list):
             Inky.panic(Pacman.rect.x,Pacman.rect.y,wall_list)
             print("Inky panic")
           
 
 
-          if Pacman.is_panic_range(Clyde.rect.centerx,Clyde.rect.y):
+          if Pacman.is_panic_range(Clyde.rect.x,Clyde.rect.y,wall_list):
             Clyde.panic(Pacman.rect.x,Pacman.rect.y,wall_list)
             print("Clyde panic")
           
