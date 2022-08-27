@@ -171,19 +171,15 @@ class Player(pygame.sprite.Sprite):
     #to check if the walls exist between pacman,ghosts
     def is_wall(self,gx,gy,walls):
       #x position
-      for w in walls:
-        if w.width==6:
-          if self.rect.x<w.x and gx>w.x:
-            return True
+      pass
             
       #y position
-        else:
-          if self.rect.y<w.y and gy>w.y:
-            return True
+      
         
 
     def is_panic_range(self,ghostx,ghosty,walls):
 
+      #to check if the walls exist between Ghosts and pacman
       if self.is_wall(ghostx,ghosty,walls):
         return False
 
