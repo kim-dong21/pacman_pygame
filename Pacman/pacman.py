@@ -179,9 +179,11 @@ class Player(pygame.sprite.Sprite):
           #벽이 고스트,팩맨 사이에 있는지 체크
           #Are they left side
           if self.rect.x<w.x and gx<w.x:
+            print("wall left")
             return False
           #Are they right side
           elif self.rect.x > w.x and gx > w.x:
+            print("wall right")
             return False
 
           #고스트,팩맨 사이에 벽이 존재하는 경우
@@ -189,11 +191,13 @@ class Player(pygame.sprite.Sprite):
           else:
             #팩맨,고스트가 벽의 세로 길이 내에 들어있는지 체크
             if (self.rect.y> w.y and self.rect.y<(w.y+w.height)) or (gy > w.y and gy<(w.y+w.height)):
+              print("wall between")
               return False
             
             else:
+              print("panic")
               return True
-              
+            
 
 
 
@@ -230,7 +234,7 @@ class Player(pygame.sprite.Sprite):
             return True
 
         elif self.rect.y+100>ghosty>self.rect.y-100 and self.rect.x==ghostx:
-          if self.is_wall(ghostx,ghosty,walls):
+          if self.is_wall(ghosty,ghosty,walls):
             return False
 
           else:
