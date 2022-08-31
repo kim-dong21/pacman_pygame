@@ -16,7 +16,7 @@ yellow   = ( 255, 255,   0)
 frozen_time=(5)
 power_fireball_time=(10)
 super_block_time=(5)
-wall_list_for_loop=[]
+
 
 Trollicon=pygame.image.load("./images/Trollman.png")
 pygame.display.set_icon(Trollicon)
@@ -95,7 +95,6 @@ def setupRoomOne(all_sprites_list):
     for item in walls:
         wall=Wall(item[0],item[1],item[2],item[3],blue)
         wall_list.add(wall)
-        wall_list_for_loop.append(item)
         all_sprites_list.add(wall)
         
     # return our new list
@@ -172,9 +171,10 @@ class Player(pygame.sprite.Sprite):
     #to check if the walls exist between pacman,ghosts
     def is_wall(self,gx,gy,walls):
       #x position
+      print(walls.sprites())
       for w in walls:
-        print(w.width)
-        print(w.height)
+        
+        print(w.x,w.y,w.width,w.height)
         #세로 벽인 경우
         if (w.width)==6:
 
@@ -334,7 +334,17 @@ class Ghost(Player):
     
 
     #running away from pacman
-    def panic(self,x,y):
+    def panic(self,x,y,walls):
+
+      collide=pygame.sprite.spritecollide(self,walls,False)
+
+      #벽에 부딫힐시
+      if collide:
+        pass
+
+
+      
+      else :
 
 
 
