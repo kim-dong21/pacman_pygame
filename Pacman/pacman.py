@@ -16,9 +16,9 @@ yellow   = ( 255, 255,   0)
 frozen_time=(5)
 power_fireball_time=(10)
 super_block_time=(5)
+wall_list_for_loop=[]
 
-
-Trollicon=pygame.image.load("E:/Pacman_py/Pacman/images/Trollman.png")
+Trollicon=pygame.image.load("./images/Trollman.png")
 pygame.display.set_icon(Trollicon)
 
 #Add music
@@ -95,6 +95,7 @@ def setupRoomOne(all_sprites_list):
     for item in walls:
         wall=Wall(item[0],item[1],item[2],item[3],blue)
         wall_list.add(wall)
+        wall_list_for_loop.append(item)
         all_sprites_list.add(wall)
         
     # return our new list
@@ -172,9 +173,10 @@ class Player(pygame.sprite.Sprite):
     def is_wall(self,gx,gy,walls):
       #x position
       for w in walls:
-
+        print(w.width)
+        print(w.height)
         #세로 벽인 경우
-        if w.width==6:
+        if (w.width)==6:
 
           #벽이 고스트,팩맨 사이에 있는지 체크
           #Are they left side
@@ -332,17 +334,7 @@ class Ghost(Player):
     
 
     #running away from pacman
-    def panic(self,x,y,walls):
-
-      collide=pygame.sprite.spritecollide(self,walls,False)
-
-      #벽에 부딫힐시
-      if collide:
-        pass
-
-
-      
-      else :
+    def panic(self,x,y):
 
 
 
@@ -650,23 +642,23 @@ def startGame():
 
 
   # Create the player paddle object
-  Pacman = Player( w, p_h, "E:/Pacman_py/Pacman/images/pacman.png" )
+  Pacman = Player( w, p_h, "./images/pacman.png" )
   all_sprites_list.add(Pacman)
   pacman_collide.add(Pacman)
   
-  Blinky=Ghost( w, b_h, "E:/Pacman_py/Pacman/images/Blinky.png" )
+  Blinky=Ghost( w, b_h, "./images/Blinky.png" )
   monsta_list.add(Blinky)
   all_sprites_list.add(Blinky)
 
-  Pinky=Ghost( w, m_h, "E:/Pacman_py/Pacman/images/Pinky.png" )
+  Pinky=Ghost( w, m_h, "./images/Pinky.png" )
   monsta_list.add(Pinky)
   all_sprites_list.add(Pinky)
    
-  Inky=Ghost( i_w, m_h, "E:/Pacman_py/Pacman/images/Inky.png" )
+  Inky=Ghost( i_w, m_h, "./images/Inky.png" )
   monsta_list.add(Inky)
   all_sprites_list.add(Inky)
    
-  Clyde=Ghost( c_w, m_h, "E:/Pacman_py/Pacman/images/Clyde.png" )
+  Clyde=Ghost( c_w, m_h, "./images/Clyde.png" )
   monsta_list.add(Clyde)
   all_sprites_list.add(Clyde)
 
