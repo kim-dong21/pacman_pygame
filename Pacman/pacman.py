@@ -171,7 +171,7 @@ class Player(pygame.sprite.Sprite):
     #to check if the walls exist between pacman,ghosts
     def is_wall(self,gx,gy,walls):
       #x position
-      print(walls.sprites())
+      
       for w in walls:
         
         print(w.x,w.y,w.width,w.height)
@@ -192,9 +192,9 @@ class Player(pygame.sprite.Sprite):
           #벽의 세로 길이 내에 존재하는지 체크
           else:
             #팩맨,고스트가 벽의 세로 길이 내에 들어있는지 체크
-            if (self.rect.y> w.y and self.rect.y<(w.y+w.height)) or (gy > w.y and gy<(w.y+w.height)):
+            if (self.rect.y> w.y and self.rect.y<(w.y+w.height)) and (gy > w.y and gy<(w.y+w.height)):
               print("wall between")
-              return False
+              continue
             
             else:
               print("panic")
@@ -216,8 +216,8 @@ class Player(pygame.sprite.Sprite):
           #벽의 가로 길이 내에 존재하는지 체크
           else:
             #팩맨,고스트가 벽의 가로 길이 내에 들어있는지 체크
-            if (self.rect.x> w.x and self.rect.x<(w.x+w.width)) or (gx > w.x and gx<(w.x+w.width)):
-              return False
+            if (self.rect.x> w.x and self.rect.x<(w.x+w.width)) and (gx > w.x and gx<(w.x+w.width)):
+              continue
             
             else:
               return True
