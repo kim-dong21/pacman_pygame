@@ -179,24 +179,37 @@ class Player(pygame.sprite.Sprite):
         #    |
         if w.width==6:
           
-          if 
-            #check walls between g,p
-            if (self.rect.x > w.x and gx > w.x) or (self.rect.x < w.x and gx < w.x) :
-            #check if they stand in height of walls
-            
-
-            else:
-
+          if (self.rect.y > w.y and self.rect.y < (w.y+w.height)) and (gy > w.y and gy < (w.y+w.height)):
 
 
         
+            #check walls between g,p
+            if (self.rect.x > w.x and gx > w.x) or (self.rect.x < w.x and gx < w.x) :
+            #check if they stand in height of walls
+              continue
 
-        #가로벽
-        # 
-        # --------       
-        else:
-          pass
+            else:
+              return True
+          else:
+            continue
+            
 
+        #가로 벽인 경우
+        else :
+          if (self.rect.x > w.x and self.rect.x < (w.x + w.width)) and (gx > w.x and gx < (w.x + w.width)):
+            
+            if (self.rect.y > w.y and gy > w.y) and (self.rect.y < w.y and gy < w.y):
+              continue
+
+            else :
+              return True
+
+          else:
+            continue
+
+
+
+    
          
       
         
@@ -205,18 +218,19 @@ class Player(pygame.sprite.Sprite):
 
       #in panic range,It checks if the walls exist between Ghosts and pacman
         if self.rect.x+100>ghostx>self.rect.x-100 and self.rect.y==ghosty:
+          
           if self.is_wall(ghostx,ghosty,walls):
             return False
 
-          else:
-            return True
+          
+          return True
 
         elif self.rect.y+100>ghosty>self.rect.y-100 and self.rect.x==ghostx:
           if self.is_wall(ghosty,ghosty,walls):
             return False
 
-          else:
-            return True
+          
+          return True
 
         else : 
           return False
