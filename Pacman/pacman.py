@@ -171,17 +171,29 @@ class Player(pygame.sprite.Sprite):
     #to check if the walls exist between pacman,ghosts
     def is_wall(self,gx,gy,walls):
       #x position
-      
       for w in walls:
+        #세로벽
+        #    |
+        #    |
+        #    |
+        #    |
+        if w.width==6:
+          
+          if 
+            #check walls between g,p
+            if (self.rect.x > w.x and gx > w.x) or (self.rect.x < w.x and gx < w.x) :
+            #check if they stand in height of walls
+            
+
+            else:
+
+
+
         
-        print(w.x,w.y,w.width,w.height)
-        #세로 벽인 경우
-        if (w.width)==6:
-          pass
-        
-        
-        
-        #가로 벽인 경우
+
+        #가로벽
+        # 
+        # --------       
         else:
           pass
 
