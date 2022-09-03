@@ -26,6 +26,47 @@ pygame.display.set_icon(Trollicon)
 #pygame.mixer.music.load('E:/Pacman_py/Pacman/pacman.mp3')
 #pygame.mixer.music.play(-1, 0.0)
 
+walls = [ [0,0,6,600],
+              [0,0,600,6],
+              [0,600,606,6],
+              [600,0,6,606],
+              [300,0,6,66],
+              [60,60,186,6], 
+              [360,60,186,6],
+              [60,120,66,6],
+              [60,120,6,126],
+              [180,120,246,6],
+              [300,120,6,66],
+              [480,120,66,6],
+              [540,120,6,126],
+              [120,180,126,6],
+              [120,180,6,126],
+              [360,180,126,6],
+              [480,180,6,126],
+              [180,240,6,126],
+              [180,360,246,6],
+              [420,240,6,126],
+              [240,240,42,6],
+              [324,240,42,6],
+              [240,240,6,66],
+              [240,300,126,6],
+              [360,240,6,66],
+              [0,300,66,6],
+              [540,300,66,6],
+              [60,360,66,6],
+              [60,360,6,186],
+              [480,360,66,6],
+              [540,360,6,186],
+              [120,420,366,6],
+              [120,420,6,66],
+              [480,420,6,66],
+              [180,480,246,6],
+              [300,480,6,66],
+              [120,540,126,6],
+              [360,540,126,6]
+            ]
+
+
 # This class represents the bar at the bottom that the player controls
 class Wall(pygame.sprite.Sprite):
     # Constructor function
@@ -168,44 +209,60 @@ class Player(pygame.sprite.Sprite):
     change_y=0
 
 
+    # walls = [ [0,0,6,600],0
+    #           [0,0,600,6],1
+    #           [0,600,606,6],2
+    #           [600,0,6,606],3
+
+
+    #           [300,0,6,66],4
+    #           [60,60,186,6],5 
+    #           [360,60,186,6],6
+    #           [60,120,66,6],7
+    #           [60,120,6,126],8
+    #           [180,120,246,6],9
+    #           [300,120,6,66],10
+    #           [480,120,66,6],11
+    #           [540,120,6,126],12
+    #           [120,180,126,6],13
+    #           [120,180,6,126],14
+    #           [360,180,126,6],15
+    #           [480,180,6,126],16
+    #           [180,240,6,126],17
+    #           [180,360,246,6],18
+    #           [420,240,6,126],19
+    #           [240,240,42,6],20
+    #           [324,240,42,6],21
+    #           [240,240,6,66],22
+    #           [240,300,126,6],23
+    #           [360,240,6,66],24
+    #           [0,300,66,6],25
+    #           [540,300,66,6],26
+    #           [60,360,66,6],27
+    #           [60,360,6,186],28
+    #           [480,360,66,6],29
+    #           [540,360,6,186],30
+    #           [120,420,366,6],31
+    #           [120,420,6,66],32
+    #           [480,420,6,66],33
+    #           [180,480,246,6],34
+    #           [300,480,6,66],35
+    #           [120,540,126,6],36
+    #           [360,540,126,6]37
+    #         ]
     #to check if the walls exist between pacman,ghosts
-    def is_wall(self,gx,gy,walls):
-      #x position
-      for w in walls:
-        #세로벽
-        #    |
-        #    |
-        #    |
-        #    |
-        if w.width==6:
+    def is_wall(self,gx,gy):
+      global walls
+
+      #세로벽
+      if  walls[4][3]==6:
+        if  walls[4][1] < self.rect.y < (walls[4][1]+walls[4][3]):
           
-          if (self.rect.y > w.y and self.rect.y < (w.y+w.height)) and (gy > w.y and gy < (w.y+w.height)):
-
-
-        
-            #check walls between g,p
-            if (self.rect.x > w.x and gx > w.x) or (self.rect.x < w.x and gx < w.x) :
-            #check if they stand in height of walls
-              continue
-
-            else:
-              return True
-          else:
-            continue
+      
             
 
-        #가로 벽인 경우
-        else :
-          if (self.rect.x > w.x and self.rect.x < (w.x + w.width)) and (gx > w.x and gx < (w.x + w.width)):
-            
-            if (self.rect.y > w.y and gy > w.y) and (self.rect.y < w.y and gy < w.y):
-              continue
 
-            else :
-              return True
-
-          else:
-            continue
+      
 
 
 
@@ -214,19 +271,19 @@ class Player(pygame.sprite.Sprite):
       
         
 
-    def is_panic_range(self,ghostx,ghosty,walls):
+    def is_panic_range(self,ghostx,ghosty):
 
       #in panic range,It checks if the walls exist between Ghosts and pacman
         if self.rect.x+100>ghostx>self.rect.x-100 and self.rect.y==ghosty:
           
-          if self.is_wall(ghostx,ghosty,walls):
+          if self.is_wall(ghostx,ghosty):
             return False
 
           
           return True
 
         elif self.rect.y+100>ghosty>self.rect.y-100 and self.rect.x==ghostx:
-          if self.is_wall(ghosty,ghosty,walls):
+          if self.is_wall(ghosty,ghosty):
             return False
 
           
@@ -324,17 +381,8 @@ class Ghost(Player):
     
 
     #running away from pacman
-    def panic(self,x,y,walls):
+    def panic(self,x,y):
 
-      collide=pygame.sprite.spritecollide(self,walls,False)
-
-      #벽에 부딫힐시
-      if collide:
-        pass
-
-
-      
-      else :
 
 
 
@@ -839,29 +887,29 @@ def startGame():
       else:
 
         if Pacman.super_power_on==True:
-          if Pacman.is_panic_range(Blinky.rect.x,Blinky.rect.y,wall_list):
+          if Pacman.is_panic_range(Blinky.rect.x,Blinky.rect.y):
           
           #only Blinky is panic
-            Blinky.panic(Pacman.rect.x,Pacman.rect.y,wall_list)
+            Blinky.panic(Pacman.rect.x,Pacman.rect.y)
             print("Blinky panic")
 
           
 
-          if Pacman.is_panic_range(Pinky.rect.x,Pinky.rect.y,wall_list):
+          if Pacman.is_panic_range(Pinky.rect.x,Pinky.rect.y):
           
           #only Pinky is panic
-            Pinky.panic(Pacman.rect.x,Pacman.rect.y,wall_list)
+            Pinky.panic(Pacman.rect.x,Pacman.rect.y)
             print("Pinky panic")
           
 
-          if Pacman.is_panic_range(Inky.rect.x,Inky.rect.y,wall_list):
-            Inky.panic(Pacman.rect.x,Pacman.rect.y,wall_list)
+          if Pacman.is_panic_range(Inky.rect.x,Inky.rect.y):
+            Inky.panic(Pacman.rect.x,Pacman.rect.y)
             print("Inky panic")
           
 
 
-          if Pacman.is_panic_range(Clyde.rect.x,Clyde.rect.y,wall_list):
-            Clyde.panic(Pacman.rect.x,Pacman.rect.y,wall_list)
+          if Pacman.is_panic_range(Clyde.rect.x,Clyde.rect.y):
+            Clyde.panic(Pacman.rect.x,Pacman.rect.y)
             print("Clyde panic")
           
       
