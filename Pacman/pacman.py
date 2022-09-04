@@ -1,6 +1,8 @@
 #Pacman in Python with PyGame
 #https://github.com/hbokmann/Pacman
   
+from cmath import rect
+import re
 import pygame
 import time
 import math
@@ -253,52 +255,92 @@ class Player(pygame.sprite.Sprite):
     #to check if the walls exist between pacman,ghosts
     def is_wall(self,gx,gy):
       global walls
-      print(walls[4][0],walls[4][1],walls[4][2],walls[4][3])
-
-      #no.4 walls
-      #세로벽
-      if  walls[4][2]==6:
-        print("width is 6")
-        if  (walls[4][1] < self.rect.y < (walls[4][1]+walls[4][3])) and (walls[4][1] < gy < (walls[4][1]+walls[4][3])):
-          print("check wall")
-          if (self.rect.x < walls[4][0] and gx < walls[4][0]) and (self.rect.x > walls[4][0] and gx > walls[4][0]):
-            print("4번 벽 패스")
-
-          else :
-            print("4번 벽 트루")
-            return True
-
-      #가로벽
-      else :
-        if (walls[4][0] < self.rect.x < walls[4][0]) and (walls[4][0] < gx < walls[4][0]):
-          if (self.rect.y < walls[4][1] and gy < walls[4][1]) and (self.rect.y > walls[4][1] and gy > walls[4][1]):
-            print("4번 벽 패스")
-
-          else :
-            print("4번 벽 트루")
-            return True
 
 
-      #no.5 walls
-      #세로벽
-      if  walls[5][3]==6:
-        if  (walls[5][1] < self.rect.y < (walls[5][1]+walls[5][3])) and (walls[5][1] < gy < walls[5][1]):
-          if (self.rect.x < walls[5][0] and gx < walls[5][0]) and (self.rect.x > walls[5][0] and gx > walls[5][0]):
+      for w in walls:
+
+
+        #length wall
+        if w[2]==6:
+          print("length wall")
+
+          #to check if they are in length of walls, we don't have to check if they are not in length of walls
+          if (w[1]< self.rect.y < (w[1]+w[3])) and (w[1] < gy < w[1]+w[3]):
             
-            print("5번 벽 패스")
-          else :
-            print("5번 벽 트루")
-            return True
+            #you have to check if walls exist between g,p
+            #      left                                   right
+            if (self.rect.x < w[0] and gx < w[0]) or (self.rect.x > w[0] and gx > w[0]):
+              continue
 
-      #가로벽
-      else :
-        if (walls[5][0] < self.rect.x < walls[5][0]) and (walls[5][0] < gx < walls[5][0]):
-          if (self.rect.y < walls[5][1] and gy < walls[5][1]) and (self.rect.y > walls[5][1] and gy > walls[5][1]):
+            else:
+              return True
+          else:
+            continue
+        
+        #width wall
+        else:
+          print("width wall")
+
+          #to check if they are in width of walls
+          if (w[0] < self.rect.x < (w[0]+w[2])) and (w[0] < gx < (w[0]+w[2])):
+
+            if (self.rect.y < w[1] and gy < w[1]) or (self.rect.y > w[1] and gy > w[1]):
+              continue
+
+            else :
+              return True
+
+          else:
+            continue
+
+
+
+      # print(walls[4][0],walls[4][1],walls[4][2],walls[4][3])
+
+      # #no.4 walls
+      # #세로벽
+      # if  walls[4][2]==6:
+      #   print("width is 6")
+      #   if  (walls[4][1] < self.rect.y < (walls[4][1]+walls[4][3])) and (walls[4][1] < gy < (walls[4][1]+walls[4][3])):
+      #     print("check wall")
+      #     if (self.rect.x < walls[4][0] and gx < walls[4][0]) and (self.rect.x > walls[4][0] and gx > walls[4][0]):
+      #       print("4번 벽 패스")
+
+      #     else :
+      #       print("4번 벽 트루")
+      #       return True
+
+      # #가로벽
+      # else :
+      #   if (walls[4][0] < self.rect.x < walls[4][0]) and (walls[4][0] < gx < (walls[4][1]+walls[4][3])):
+      #     if (self.rect.y < walls[4][1] and gy < walls[4][1]) and (self.rect.y > walls[4][1] and gy > walls[4][1]):
+      #       print("4번 벽 패스")
+
+      #     else :
+      #       print("4번 벽 트루")
+      #       return True
+
+
+      # #no.5 walls
+      # #세로벽
+      # if  walls[5][2]==6:
+      #   if  (walls[5][1] < self.rect.y < (walls[5][1]+walls[5][3])) and (walls[5][1] < gy < (walls[5][1]+walls[5][3])):
+      #     if (self.rect.x < walls[5][0] and gx < walls[5][0]) and (self.rect.x > walls[5][0] and gx > walls[5][0]):
             
-            print("5번 벽 패스")
-          else :
-            print("5번 벽 트루")
-            return True
+      #       print("5번 벽 패스")
+      #     else :
+      #       print("5번 벽 트루")
+      #       return True
+
+      # #가로벽
+      # else :
+      #   if (walls[5][0] < self.rect.x < (walls[5][0]+walls[5][2])) and (walls[5][0] < gx < (walls[5][0]+walls[5][2])):
+      #     if (self.rect.y < walls[5][1] and gy < walls[5][1]) and (self.rect.y > walls[5][1] and gy > walls[5][1]):
+            
+      #       print("5번 벽 패스")
+      #     else :
+      #       print("5번 벽 트루")
+      #       return True
         
 
 
