@@ -253,12 +253,14 @@ class Player(pygame.sprite.Sprite):
     #to check if the walls exist between pacman,ghosts
     def is_wall(self,gx,gy):
       global walls
-
+      print(walls[4][0],walls[4][1],walls[4][2],walls[4][3])
 
       #no.4 walls
       #세로벽
       if  walls[4][2]==6:
-        if  (walls[4][1] < self.rect.y < (walls[4][1]+walls[4][3])) and (walls[4][1] < gy < walls[4][1]):
+        print("width is 6")
+        if  (walls[4][1] < self.rect.y < (walls[4][1]+walls[4][3])) and (walls[4][1] < gy < (walls[4][1]+walls[4][3])):
+          print("check wall")
           if (self.rect.x < walls[4][0] and gx < walls[4][0]) and (self.rect.x > walls[4][0] and gx > walls[4][0]):
             print("4번 벽 패스")
 
