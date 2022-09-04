@@ -94,45 +94,7 @@ def setupRoomOne(all_sprites_list):
     wall_list=pygame.sprite.RenderPlain()
      
     # This is a list of walls. Each is in the form [x, y, width, height]
-    walls = [ [0,0,6,600],
-              [0,0,600,6],
-              [0,600,606,6],
-              [600,0,6,606],
-              [300,0,6,66],
-              [60,60,186,6], 
-              [360,60,186,6],
-              [60,120,66,6],
-              [60,120,6,126],
-              [180,120,246,6],
-              [300,120,6,66],
-              [480,120,66,6],
-              [540,120,6,126],
-              [120,180,126,6],
-              [120,180,6,126],
-              [360,180,126,6],
-              [480,180,6,126],
-              [180,240,6,126],
-              [180,360,246,6],
-              [420,240,6,126],
-              [240,240,42,6],
-              [324,240,42,6],
-              [240,240,6,66],
-              [240,300,126,6],
-              [360,240,6,66],
-              [0,300,66,6],
-              [540,300,66,6],
-              [60,360,66,6],
-              [60,360,6,186],
-              [480,360,66,6],
-              [540,360,6,186],
-              [120,420,366,6],
-              [120,420,6,66],
-              [480,420,6,66],
-              [180,480,246,6],
-              [300,480,6,66],
-              [120,540,126,6],
-              [360,540,126,6]
-            ]
+    global walls
      
     # Loop through the list. Create the wall, add it to the list
     for item in walls:
@@ -210,48 +172,6 @@ class Player(pygame.sprite.Sprite):
     change_x=0
     change_y=0
 
-
-    # walls = [ [0,0,6,600],0
-    #           [0,0,600,6],1
-    #           [0,600,606,6],2
-    #           [600,0,6,606],3
-
-
-    #           [300,0,6,66],4
-    #           [60,60,186,6],5 
-    #           [360,60,186,6],6
-    #           [60,120,66,6],7
-    #           [60,120,6,126],8
-    #           [180,120,246,6],9
-    #           [300,120,6,66],10
-    #           [480,120,66,6],11
-    #           [540,120,6,126],12
-    #           [120,180,126,6],13
-    #           [120,180,6,126],14
-    #           [360,180,126,6],15
-    #           [480,180,6,126],16
-    #           [180,240,6,126],17
-    #           [180,360,246,6],18
-    #           [420,240,6,126],19
-    #           [240,240,42,6],20
-    #           [324,240,42,6],21
-    #           [240,240,6,66],22
-    #           [240,300,126,6],23
-    #           [360,240,6,66],24
-    #           [0,300,66,6],25
-    #           [540,300,66,6],26
-    #           [60,360,66,6],27
-    #           [60,360,6,186],28
-    #           [480,360,66,6],29
-    #           [540,360,6,186],30
-    #           [120,420,366,6],31
-    #           [120,420,6,66],32
-    #           [480,420,6,66],33
-    #           [180,480,246,6],34
-    #           [300,480,6,66],35
-    #           [120,540,126,6],36
-    #           [360,540,126,6]37
-    #         ]
     #to check if the walls exist between pacman,ghosts
     def is_wall(self,gx,gy):
       global walls
@@ -342,21 +262,7 @@ class Player(pygame.sprite.Sprite):
       #       print("5번 벽 트루")
       #       return True
         
-
-
-
-      
-            
-
-
-      
-
-
-
     
-         
-      
-        
 
     def is_panic_range(self,ghostx,ghosty):
 
@@ -379,8 +285,6 @@ class Player(pygame.sprite.Sprite):
         else : 
           return False
       
-      
-
 
     # Constructor function
     def __init__(self,x,y, filename):
@@ -468,8 +372,9 @@ class Ghost(Player):
     
 
     #running away from pacman
-    def panic(self,x,y):
-
+    def panic(self,x,y,walls):
+      
+      
 
 
 
@@ -977,7 +882,7 @@ def startGame():
           if Pacman.is_panic_range(Blinky.rect.x,Blinky.rect.y):
           
           #only Blinky is panic
-            Blinky.panic(Pacman.rect.x,Pacman.rect.y)
+            Blinky.panic(Pacman.rect.x,Pacman.rect.y,walls)
             print("Blinky panic")
 
           
@@ -985,18 +890,18 @@ def startGame():
           if Pacman.is_panic_range(Pinky.rect.x,Pinky.rect.y):
           
           #only Pinky is panic
-            Pinky.panic(Pacman.rect.x,Pacman.rect.y)
+            Pinky.panic(Pacman.rect.x,Pacman.rect.y,walls)
             print("Pinky panic")
           
 
           if Pacman.is_panic_range(Inky.rect.x,Inky.rect.y):
-            Inky.panic(Pacman.rect.x,Pacman.rect.y)
+            Inky.panic(Pacman.rect.x,Pacman.rect.y,walls)
             print("Inky panic")
           
 
 
           if Pacman.is_panic_range(Clyde.rect.x,Clyde.rect.y):
-            Clyde.panic(Pacman.rect.x,Pacman.rect.y)
+            Clyde.panic(Pacman.rect.x,Pacman.rect.y,walls)
             print("Clyde panic")
           
       
