@@ -260,11 +260,11 @@ class Player(pygame.sprite.Sprite):
       for w in walls:
 
 
-        #length wall
+        #vertical wall
         if w[2]==6:
-          print("length wall")
+          print("vertical wall")
 
-          #to check if they are in length of walls, we don't have to check if they are not in length of walls
+          #to check if they are in lengths of walls, we don't have to check if they are not in lengths of walls
           if (w[1]< self.rect.y < (w[1]+w[3])) and (w[1] < gy < w[1]+w[3]):
             
             #you have to check if walls exist between g,p
@@ -277,11 +277,11 @@ class Player(pygame.sprite.Sprite):
           else:
             continue
         
-        #width wall
+        #horizontal wall
         else:
-          print("width wall")
+          print("horizontal wall")
 
-          #to check if they are in width of walls
+          #to check if they are in widths of walls
           if (w[0] < self.rect.x < (w[0]+w[2])) and (w[0] < gx < (w[0]+w[2])):
 
             if (self.rect.y < w[1] and gy < w[1]) or (self.rect.y > w[1] and gy > w[1]):
