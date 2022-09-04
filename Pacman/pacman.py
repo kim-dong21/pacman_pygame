@@ -254,10 +254,53 @@ class Player(pygame.sprite.Sprite):
     def is_wall(self,gx,gy):
       global walls
 
+
+      #no.4 walls
       #세로벽
-      if  walls[4][3]==6:
-        if  walls[4][1] < self.rect.y < (walls[4][1]+walls[4][3]):
-          
+      if  walls[4][2]==6:
+        if  (walls[4][1] < self.rect.y < (walls[4][1]+walls[4][3])) and (walls[4][1] < gy < walls[4][1]):
+          if (self.rect.x < walls[4][0] and gx < walls[4][0]) and (self.rect.x > walls[4][0] and gx > walls[4][0]):
+            print("4번 벽 패스")
+
+          else :
+            print("4번 벽 트루")
+            return True
+
+      #가로벽
+      else :
+        if (walls[4][0] < self.rect.x < walls[4][0]) and (walls[4][0] < gx < walls[4][0]):
+          if (self.rect.y < walls[4][1] and gy < walls[4][1]) and (self.rect.y > walls[4][1] and gy > walls[4][1]):
+            print("4번 벽 패스")
+
+          else :
+            print("4번 벽 트루")
+            return True
+
+
+      #no.5 walls
+      #세로벽
+      if  walls[5][3]==6:
+        if  (walls[5][1] < self.rect.y < (walls[5][1]+walls[5][3])) and (walls[5][1] < gy < walls[5][1]):
+          if (self.rect.x < walls[5][0] and gx < walls[5][0]) and (self.rect.x > walls[5][0] and gx > walls[5][0]):
+            
+            print("5번 벽 패스")
+          else :
+            print("5번 벽 트루")
+            return True
+
+      #가로벽
+      else :
+        if (walls[5][0] < self.rect.x < walls[5][0]) and (walls[5][0] < gx < walls[5][0]):
+          if (self.rect.y < walls[5][1] and gy < walls[5][1]) and (self.rect.y > walls[5][1] and gy > walls[5][1]):
+            
+            print("5번 벽 패스")
+          else :
+            print("5번 벽 트루")
+            return True
+        
+
+
+
       
             
 
@@ -283,7 +326,7 @@ class Player(pygame.sprite.Sprite):
           return True
 
         elif self.rect.y+100>ghosty>self.rect.y-100 and self.rect.x==ghostx:
-          if self.is_wall(ghosty,ghosty):
+          if self.is_wall(ghostx,ghosty):
             return False
 
           
