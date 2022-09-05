@@ -374,7 +374,13 @@ class Ghost(Player):
     #running away from pacman
     def panic(self,x,y,walls):
       
+      wall_collide=pygame.sprite.RenderPlain()
+      wall_collide=pygame.sprite.spritecollide(self,walls,False)
       
+      if wall_collide:
+        return
+      
+      else:
 
 
 
@@ -382,17 +388,17 @@ class Ghost(Player):
         if self.rect.x==x:
           #팩맨 y의 반대 방향으로 도망
           if self.rect.y<y:
-            self.rect.y-=30
+            self.rect.y-=15
           else:
-            self.rect.y+=30
+            self.rect.y+=15
 
         #팩맨과 y가 같은 줄
         elif self.rect.y==y:
           #팩맨 x의 반대 방향으로 도망 
           if self.rect.x<x:
-            self.rect.x-=30
+            self.rect.x-=15
           else:
-            self.rect.x+=30
+            self.rect.x+=15
 
 
     def reset_postion(self):
@@ -908,7 +914,7 @@ def startGame():
             print("Clyde panic")
           
       
-                                                    #p_turn=0,p_steps=0,pl=Pinky 방향 배열 길이
+                                                   #p_turn=0,p_steps=0,pl=Pinky 방향 배열 길이
         returned = Pinky.changespeed(Pinky_directions,False,p_turn,p_steps,pl)
         p_turn = returned[0]
         p_steps = returned[1]
