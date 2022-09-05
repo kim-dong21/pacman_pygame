@@ -18,7 +18,7 @@ yellow   = ( 255, 255,   0)
 frozen_time=(5)
 power_fireball_time=(10)
 super_block_time=(5)
-
+power_time=(15)
 
 Trollicon=pygame.image.load("./images/Trollman.png")
 pygame.display.set_icon(Trollicon)
@@ -212,7 +212,7 @@ class Player(pygame.sprite.Sprite):
 
           else:
             continue
-
+          
 
 
       # print(walls[4][0],walls[4][1],walls[4][2],walls[4][3])
@@ -879,6 +879,9 @@ def startGame():
       else:
 
         if Pacman.super_power_on==True:
+          if power_time==calc_power_time(time.time()):
+            Pacman.super_power_on=False
+
           if Pacman.is_panic_range(Blinky.rect.x,Blinky.rect.y):
           
           #only Blinky is panic
