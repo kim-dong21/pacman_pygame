@@ -374,13 +374,7 @@ class Ghost(Player):
     #running away from pacman
     def panic(self,x,y,walls):
       
-      wall_collide=pygame.sprite.RenderPlain()
-      wall_collide=pygame.sprite.spritecollide(self,walls,False)
       
-      if wall_collide:
-        return
-      
-      else:
 
 
 
