@@ -375,13 +375,14 @@ class Ghost(Player):
     
 
     #running away from pacman
-    def panic(self,x,y,walls):
+    def panic(self,x,y,walls,):
       
       
       w_collide=pygame.sprite.RenderPlain()
 
+      w_collide=pygame.sprite.spritecollide(self,walls,False)
       if w_collide:
-        return
+        return True
 
       else:
 
@@ -892,8 +893,9 @@ def startGame():
           if Pacman.is_panic_range(Blinky.rect.x,Blinky.rect.y):
           
           #only Blinky is panic
-            Blinky.panic(Pacman.rect.x,Pacman.rect.y,walls)
-            print("Blinky panic")
+            if Blinky.panic(Pacman.rect.x,Pacman.rect.y,wall_list):
+              pass
+            
 
           else:
             returned = Blinky.changespeed(Blinky_directions,False,b_turn,b_steps,bl)
