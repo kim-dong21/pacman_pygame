@@ -20,7 +20,7 @@ power_fireball_time=(10)
 super_block_time=(5)
 power_time=(15)
 
-Trollicon=pygame.image.load("./images/Trollman.png")
+Trollicon=pygame.image.load("./Pacman/images/Trollman.png")
 pygame.display.set_icon(Trollicon)
 
 #Add music
@@ -377,15 +377,14 @@ class Ghost(Player):
     
 
     #running away from pacman
-    def panic(self,x,y,walls,):
+    def panic(self,x,y,walls):
       
-      
-      self.running_direction=""
 
       w_collide=pygame.sprite.RenderPlain()
 
       w_collide=pygame.sprite.spritecollide(self,walls,False)
       if w_collide:
+        
         return True
 
       else:
@@ -699,23 +698,23 @@ def startGame():
 
 
   # Create the player paddle object
-  Pacman = Player( w, p_h, "./images/pacman.png" )
+  Pacman = Player( w, p_h, "./Pacman/images/pacman.png" )
   all_sprites_list.add(Pacman)
   pacman_collide.add(Pacman)
   
-  Blinky=Ghost( w, b_h, "./images/Blinky.png" )
+  Blinky=Ghost( w, b_h, "./Pacman/images/Blinky.png" )
   monsta_list.add(Blinky)
   all_sprites_list.add(Blinky)
 
-  Pinky=Ghost( w, m_h, "./images/Pinky.png" )
+  Pinky=Ghost( w, m_h, "./Pacman/images/Pinky.png" )
   monsta_list.add(Pinky)
   all_sprites_list.add(Pinky)
    
-  Inky=Ghost( i_w, m_h, "./images/Inky.png" )
+  Inky=Ghost( i_w, m_h, "./Pacman/images/Inky.png" )
   monsta_list.add(Inky)
   all_sprites_list.add(Inky)
    
-  Clyde=Ghost( c_w, m_h, "./images/Clyde.png" )
+  Clyde=Ghost( c_w, m_h, "./Pacman/images/Clyde.png" )
   monsta_list.add(Clyde)
   all_sprites_list.add(Clyde)
 
@@ -901,10 +900,7 @@ def startGame():
           if Pacman.is_panic_range(Blinky.rect.x,Blinky.rect.y):
           
           #only Blinky is panic
-            if Blinky.panic(Pacman.rect.x,Pacman.rect.y,wall_list):
-              #벽에 부딫히면 방향 전환
-              
-            
+            Blinky.panic(Pacman.rect.x,Pacman.rect.y,wall_list)
 
           else:
             returned = Blinky.changespeed(Blinky_directions,False,b_turn,b_steps,bl)
@@ -918,7 +914,7 @@ def startGame():
           if Pacman.is_panic_range(Pinky.rect.x,Pinky.rect.y):
           
           #only Pinky is panic
-            Pinky.panic(Pacman.rect.x,Pacman.rect.y,walls)
+            Pinky.panic(Pacman.rect.x,Pacman.rect.y,wall_list)
             print("Pinky panic")
 
           else:
@@ -930,7 +926,7 @@ def startGame():
           
 
           if Pacman.is_panic_range(Inky.rect.x,Inky.rect.y):
-            Inky.panic(Pacman.rect.x,Pacman.rect.y,walls)
+            Inky.panic(Pacman.rect.x,Pacman.rect.y,wall_list)
             print("Inky panic")
           
           else:
@@ -943,7 +939,7 @@ def startGame():
 
 
           if Pacman.is_panic_range(Clyde.rect.x,Clyde.rect.y):
-            Clyde.panic(Pacman.rect.x,Pacman.rect.y,walls)
+            Clyde.panic(Pacman.rect.x,Pacman.rect.y,wall_list)
             print("Clyde panic")
 
           else:
