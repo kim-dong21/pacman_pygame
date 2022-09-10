@@ -310,10 +310,9 @@ class Player(pygame.sprite.Sprite):
     def changespeed(self,x,y):
         self.change_x+=x
         self.change_y+=y
-          
-    # Find a new position for the player
-    def update(self,walls,gate):
-        # Get the old position, in case we need to go back to it
+    
+    def BackToOldPosition(self,walls,gate):
+      # Get the old position, in case we need to go back to it
         
         old_x=self.rect.left
         new_x=old_x+self.change_x
@@ -356,6 +355,10 @@ class Player(pygame.sprite.Sprite):
           if gate_hit:
             self.rect.left=old_x
             self.rect.top=old_y
+
+    # Find a new position for the player
+    def update(self,walls,gate):
+        self.BackToOldPosition(walls,gate)
 
     def direction(self,key):
       if key == pygame.K_LEFT:
@@ -774,7 +777,6 @@ def startGame():
   score = 0
 
   done = False
-
 
   frozen=False
   
