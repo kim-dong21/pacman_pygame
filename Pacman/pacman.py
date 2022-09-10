@@ -374,10 +374,14 @@ class Player(pygame.sprite.Sprite):
 class Ghost(Player):
     
 
+    
+
     #running away from pacman
     def panic(self,x,y,walls,):
       
       
+      self.running_direction=""
+
       w_collide=pygame.sprite.RenderPlain()
 
       w_collide=pygame.sprite.spritecollide(self,walls,False)
@@ -390,16 +394,20 @@ class Ghost(Player):
         if self.rect.x==x:
           #팩맨 y의 반대 방향으로 도망
           if self.rect.y<y:
+            self.running_direction="UP"
             self.rect.y-=15
           else:
+            self.running_direction="DOWN"
             self.rect.y+=15
 
         #팩맨과 y가 같은 줄
         elif self.rect.y==y:
           #팩맨 x의 반대 방향으로 도망 
           if self.rect.x<x:
+            self.running_direction="LEFT"
             self.rect.x-=15
           else:
+            self.running_direction="RIGHT"
             self.rect.x+=15
 
 
@@ -894,7 +902,8 @@ def startGame():
           
           #only Blinky is panic
             if Blinky.panic(Pacman.rect.x,Pacman.rect.y,wall_list):
-              pass
+              #벽에 부딫히면 방향 전환
+              
             
 
           else:
