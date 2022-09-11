@@ -384,7 +384,43 @@ class Ghost(Player):
 
       w_collide=pygame.sprite.spritecollide(self,walls,False)
       if w_collide:
+        # Get the old position, in case we need to go back to it
         
+        old_x=self.rect.left
+        new_x=old_x+self.change_x
+        prev_x=old_x+self.prev_x
+        self.rect.left = new_x
+        
+        old_y=self.rect.top
+        new_y=old_y+self.change_y
+        prev_y=old_y+self.prev_y
+
+        # Did this update cause us to hit a wall?
+        x_collide = pygame.sprite.spritecollide(self, walls, False)
+        if x_collide:
+            # Whoops, hit a wall. Go back to the old position
+            self.rect.left=old_x
+            # self.rect.top=prev_y
+            # y_collide = pygame.sprite.spritecollide(self, walls, False)
+            # if y_collide:
+            #     # Whoops, hit a wall. Go back to the old position
+            #     self.rect.top=old_y
+            #     print('a')
+        else:
+
+            self.rect.top = new_y
+
+            # Did this update cause us to hit a wall?
+            y_collide = pygame.sprite.spritecollide(self, walls, False)
+            if y_collide:
+                # Whoops, hit a wall. Go back to the old position
+                self.rect.top=old_y
+                # self.rect.left=prev_x
+                # x_collide = pygame.sprite.spritecollide(self, walls, False)
+                # if x_collide:
+                #     # Whoops, hit a wall. Go back to the old position
+                #     self.rect.left=old_x
+                #     print('b')
         return True
 
       else:
