@@ -915,7 +915,7 @@ def startGame():
           
           #only Blinky is panic
             if Blinky.panic(Pacman.rect.x,Pacman.rect.y,wall_list):
-              
+              pass
 
           else:
             returned = Blinky.changespeed(Blinky_directions,False,b_turn,b_steps,bl)
